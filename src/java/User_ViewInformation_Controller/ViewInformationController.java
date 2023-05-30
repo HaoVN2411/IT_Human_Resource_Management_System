@@ -3,45 +3,47 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package sample.Controllers;
+package User_ViewInformation_Controller;
 
+import User_Login_Controller.User_Login_DTO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Hào Cute
+ * @author CAO-KIEN-QUOC
  */
-public class MainController extends HttpServlet {
+@WebServlet(name = "ViewInformationController", urlPatterns = {"/ViewInformationController"})
+public class ViewInformationController extends HttpServlet {
 
     private static final String ERROR = "error.jsp";
-    private static final String USER_LOGIN = "Login";
-    private static final String USER_LOGIN_CONTROLLER = "LoginController";
+    private static final String SUCCESS = "HM.jsp";
 
-    private static final String CHANGEPASSWORD = "ChangePassword";
-    private static final String CHANGEPASSWORD_CONTROLLER = "ChangePasswordController";
-
-    private static final String VIEWINFORMATION = "ViewInformation";
-    private static final String VIEWINFORMATION_CONTROLLER = "ViewInformationController";
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
-            String action = request.getParameter("action");
-            if (USER_LOGIN.equals(action)) {
-                url = USER_LOGIN_CONTROLLER;
-            }else if (CHANGEPASSWORD.equals(action)) {
-                url = CHANGEPASSWORD_CONTROLLER;
-            } else if(VIEWINFORMATION.equals(action)){
-                url = VIEWINFORMATION_CONTROLLER;
+            String search = request.getParameter("search");   
+            String employeeID = request.getParameter("employeeID");
+            Employee_Information_DAO dao = new Employee_Information_DAO();
+            HttpSession session = request.getSession();
+            User_Login_DTO loginUser=(User_Login_DTO) session.getAttribute("USER_LOGIN");
+            List<Employee_Information_DTO> listUser = dao.getListUser(loginUser.getEmployeeId());
+            //String a = dao.getListUser(search);
+            if (listUser.size() > 0) {
+                request.setAttribute("LIST_USER", listUser);
+                url = SUCCESS;
             }
         } catch (Exception e) {
-            log("Error at MainController" + e.toString());
+            log("error at SearchController" + e.toString());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }
