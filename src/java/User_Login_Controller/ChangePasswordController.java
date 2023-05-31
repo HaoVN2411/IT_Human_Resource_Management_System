@@ -8,6 +8,7 @@ package User_Login_Controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,44 +18,56 @@ import javax.servlet.http.HttpSession;
  *
  * @author Hào Cute
  */
-public class LoginController extends HttpServlet {
+@WebServlet(name = "ChangePasswordController", urlPatterns = {"/ChangePasswordController"})
+public class ChangePasswordController extends HttpServlet {
 
-    private static final String ERROR = "login.jsp";
-    private static final String Staff = "staff.jsp";
-    private static final String HRS = "HRS.jsp";
-    private static final String HRM = "HRM.jsp";
+    private static final String ERROR = "change_password.jsp";
+    private static final String SUCCESS = "change_password.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
+        UserError userError = new UserError();
         try {
             String userID = request.getParameter("userID");
-            String password = request.getParameter("password");
-            User_Login_DAO DAO = new User_Login_DAO();
-            User_Login_DTO userLogin = DAO.LoginUser(userID, password);
-            if (userLogin != null) {
-                if (userLogin.isIsActive() == false) {
-                    request.setAttribute("ERROR_MESSAGE", "Tài khoản của bạn đã hết hạn. Vui lòng liên hệ với admin để biết thêm chi tiết!");
-                }
-                HttpSession Session = request.getSession();
-                if (userLogin.getRoleName().equals("Staff")) {
-                    Session.setAttribute("USER_LOGIN", userLogin);
-                    url = Staff;
-                }
-                if (userLogin.getRoleName().equals("HRS")) {
-                    Session.setAttribute("USER_LOGIN", userLogin);
-                    url = HRS;
-                }
-                if (userLogin.getRoleName().equals("HRM")) {
-                    Session.setAttribute("USER_LOGIN", userLogin);
-                    url = HRM;
+            String oldPassword = "12345678";
+            String newPassword = "123456789";
+            String newConfirm = "123456789";
+            User_Login_DAO dao = new User_Login_DAO();
+            HttpSession session = request.getSession();
+            User_Login_DTO loginUser = (User_Login_DTO) session.getAttribute("USER_LOGIN");
+            boolean checkValidation = true;
+            if (!loginUser.getPassword().equals(oldPassword)) {
+                checkValidation = false;
+                userError.setPasswordError("The current password is not correct.");
+            } else if (newPassword.equals(oldPassword)) {
+                checkValidation = false;
+                userError.setPasswordError("A new password cannot be the current password.");
+            } else if (newPassword.length() < 8) {
+                checkValidation = false;
+                userError.setPasswordError("Password must be at least 8 characters");
+            } else if (!newPassword.equals(newConfirm)) {
+                checkValidation = false;
+                userError.setPasswordError("wrong confirm password");
+            }
+            if (checkValidation) {
+                User_Login_DTO user = new User_Login_DTO(userID, newPassword, true, "", "");
+                boolean checkUpdate = dao.change(user);
+                if (checkUpdate) {
+                    loginUser.setPassword(newPassword);
+                    session.setAttribute("USER_LOGIN", loginUser);
+                    url = SUCCESS;
+                    request.setAttribute("SUCCESS", "change password succesfully");
+                } else {
+                    request.setAttribute("ERROR", "Can't not change password");
                 }
             } else {
-                request.setAttribute("ERROR_MESSAGE", "Tài khoản không tồn tại hoặc sai mật khẩu");
+                request.setAttribute("USER_ERROR", userError);
             }
+
         } catch (Exception e) {
-            log("Error at LoginController: " + e.toString());
+            log("error at ChangPasswordController: " + e.toString());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }

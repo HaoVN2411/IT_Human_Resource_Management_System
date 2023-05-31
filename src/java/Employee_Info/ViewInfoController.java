@@ -3,11 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package User_Login_Controller;
+package Employee_Info;
 
+import User_Login_Controller.User_Login_DTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,44 +19,27 @@ import javax.servlet.http.HttpSession;
  *
  * @author Hào Cute
  */
-public class LoginController extends HttpServlet {
+@WebServlet(name = "ViewInfoController", urlPatterns = {"/ViewInfoController"})
+public class ViewInfoController extends HttpServlet {
 
-    private static final String ERROR = "login.jsp";
-    private static final String Staff = "staff.jsp";
-    private static final String HRS = "HRS.jsp";
-    private static final String HRM = "HRM.jsp";
+    private static final String ERROR = "error.jsp";
+    private static final String SUCCESS = "view_info.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
-            String userID = request.getParameter("userID");
-            String password = request.getParameter("password");
-            User_Login_DAO DAO = new User_Login_DAO();
-            User_Login_DTO userLogin = DAO.LoginUser(userID, password);
-            if (userLogin != null) {
-                if (userLogin.isIsActive() == false) {
-                    request.setAttribute("ERROR_MESSAGE", "Tài khoản của bạn đã hết hạn. Vui lòng liên hệ với admin để biết thêm chi tiết!");
-                }
-                HttpSession Session = request.getSession();
-                if (userLogin.getRoleName().equals("Staff")) {
-                    Session.setAttribute("USER_LOGIN", userLogin);
-                    url = Staff;
-                }
-                if (userLogin.getRoleName().equals("HRS")) {
-                    Session.setAttribute("USER_LOGIN", userLogin);
-                    url = HRS;
-                }
-                if (userLogin.getRoleName().equals("HRM")) {
-                    Session.setAttribute("USER_LOGIN", userLogin);
-                    url = HRM;
-                }
-            } else {
-                request.setAttribute("ERROR_MESSAGE", "Tài khoản không tồn tại hoặc sai mật khẩu");
+            Employee_Info_DAO dao = new Employee_Info_DAO();
+            HttpSession session = request.getSession();
+            User_Login_DTO loginUser = (User_Login_DTO) session.getAttribute("USER_LOGIN");
+            Employee_Info_DTO user = dao.getUserInfo(loginUser.getEmployeeId());
+            if (user != null) {
+                request.setAttribute("USER_INFO", user);
+                url = SUCCESS;
             }
         } catch (Exception e) {
-            log("Error at LoginController: " + e.toString());
+            log("error at SearchController" + e.toString());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }
