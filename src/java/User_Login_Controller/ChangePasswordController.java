@@ -30,10 +30,12 @@ public class ChangePasswordController extends HttpServlet {
         String url = ERROR;
         UserError userError = new UserError();
         try {
-            String userID = request.getParameter("userID");
-            String oldPassword = "12345678";
-            String newPassword = "123456789";
-            String newConfirm = "123456789";
+            String oldPassword = request.getParameter("oldPassword");
+            String newPassword = request.getParameter("newPassword");
+            String newConfirm = request.getParameter("newConfirm");
+//            String oldPassword = "123456789";
+//            String newPassword = "12345678";
+//            String newConfirm = "12345678";
             User_Login_DAO dao = new User_Login_DAO();
             HttpSession session = request.getSession();
             User_Login_DTO loginUser = (User_Login_DTO) session.getAttribute("USER_LOGIN");
@@ -52,15 +54,16 @@ public class ChangePasswordController extends HttpServlet {
                 userError.setPasswordError("wrong confirm password");
             }
             if (checkValidation) {
-                User_Login_DTO user = new User_Login_DTO(userID, newPassword, true, "", "");
+                User_Login_DTO user = new User_Login_DTO(loginUser.getUserID(), newPassword, true, "", "");
                 boolean checkUpdate = dao.change(user);
                 if (checkUpdate) {
                     loginUser.setPassword(newPassword);
                     session.setAttribute("USER_LOGIN", loginUser);
+                    request.setAttribute("MESSAGE", "change password succesfully");
                     url = SUCCESS;
-                    request.setAttribute("SUCCESS", "change password succesfully");
+                    
                 } else {
-                    request.setAttribute("ERROR", "Can't not change password");
+                    request.setAttribute("MESSAGE", "Can't not change password");
                 }
             } else {
                 request.setAttribute("USER_ERROR", userError);
