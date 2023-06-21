@@ -25,6 +25,10 @@ public class MainController extends HttpServlet {
     private static final String CHANGEPASSWORD = "ChangePassword";
     private static final String CHANGEPASSWORD_CONTROLLER = "ChangePasswordController";
 
+    
+    private static final String PAYROLL = "PayRoll";
+    private static final String PAYROLL_CONTROLLER = "PayRollController";
+    
     private static final String VIEWINFORMATION = "ViewInformation";
     private static final String VIEWINFORMATION_CONTROLLER = "ViewInformationController";
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -39,6 +43,8 @@ public class MainController extends HttpServlet {
                 url = CHANGEPASSWORD_CONTROLLER;
             } else if(VIEWINFORMATION.equals(action)){
                 url = VIEWINFORMATION_CONTROLLER;
+            }else if(PAYROLL.equals(action)){
+                url = PAYROLL_CONTROLLER;
             }
         } catch (Exception e) {
             log("Error at MainController" + e.toString());
