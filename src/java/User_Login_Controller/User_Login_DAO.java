@@ -17,8 +17,8 @@ import sample.Utils.DBUtils;
  */
 public class User_Login_DAO {
 
-    private static final String USER_LOGIN = "select u.employeeId, u.isActive, r.roleName from User_Login  u, RoleInfo r where u.roleId = r.RoleID AND userID = ? AND password = ? ";
-    private static final String CHANGE = "UPDATE User_Login SET password=? where userID=?";
+    private static final String USER_LOGIN = "select u.employeeId, u.isActive, r.roleName from UserLogin  u, RoleInfo r where u.roleId = r.RoleID AND userID = ? AND password = ? ";
+    private static final String CHANGE = "UPDATE UserLogin SET password=? where userID=?";
 
     public User_Login_DTO LoginUser(String userID, String password) throws SQLException {
         User_Login_DTO user = null;

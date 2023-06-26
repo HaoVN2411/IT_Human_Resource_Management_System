@@ -21,8 +21,8 @@ public class LoginController extends HttpServlet {
 
     private static final String ERROR = "login.jsp";
     private static final String Staff = "staff.jsp";
-    private static final String HRS = "HRS.jsp";
-    private static final String HRM = "HRM.jsp";
+    private static final String HRS = "searchContract.jsp";
+    private static final String HRM = "searchContract.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
