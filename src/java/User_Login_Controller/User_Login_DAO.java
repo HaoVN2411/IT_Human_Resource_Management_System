@@ -17,7 +17,7 @@ import sample.Utils.DBUtils;
  */
 public class User_Login_DAO {
 
-    private static final String USER_LOGIN = "select u.employeeId, u.isActive, r.roleName from User_Login  u, RoleInfo r where u.roleId = r.RoleID AND userID = ? AND password = ? ";
+    private static final String USER_LOGIN = "select u.employeeId, u.isActive, r.roleName, e.fullName from UserLogin  u, RoleInfo r, EmployeeInformation e where u.roleId = r.RoleID AND e.employeeId = u.employeeId AND userID = ? AND password = ? ";
     private static final String CHANGE = "UPDATE User_Login SET password=? where userID=?";
 
     public User_Login_DTO LoginUser(String userID, String password) throws SQLException {
@@ -35,7 +35,8 @@ public class User_Login_DAO {
                 String employeeId = rs.getString("employeeId");
                 boolean isActive = rs.getBoolean("isActive");
                 String roleName = rs.getString("roleName");
-                user = new User_Login_DTO(userID, password, isActive, employeeId, roleName);
+                String fullName = rs.getString("fullName");
+                user = new User_Login_DTO(userID, password, isActive, employeeId, roleName, fullName);
             }
         } catch (Exception e) {
         } finally {

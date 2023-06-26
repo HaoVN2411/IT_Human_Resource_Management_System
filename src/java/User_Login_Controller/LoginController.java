@@ -20,7 +20,7 @@ import javax.servlet.http.HttpSession;
 public class LoginController extends HttpServlet {
 
     private static final String ERROR = "login.jsp";
-    private static final String Staff = "staff.jsp";
+    private static final String STAFF = "staff.jsp";
     private static final String HRS = "HRS.jsp";
     private static final String HRM = "HRM.jsp";
 
@@ -40,7 +40,7 @@ public class LoginController extends HttpServlet {
                 HttpSession Session = request.getSession();
                 if (userLogin.getRoleName().equals("Staff")) {
                     Session.setAttribute("USER_LOGIN", userLogin);
-                    url = Staff;
+                    url = STAFF;
                 }
                 if (userLogin.getRoleName().equals("HRS")) {
                     Session.setAttribute("USER_LOGIN", userLogin);
