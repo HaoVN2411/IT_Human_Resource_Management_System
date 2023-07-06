@@ -67,18 +67,18 @@ public class Helper {
     public static boolean saveImage(String candidateID, Part file, String path,
             String saveDir) {
         try {
-            String seperateFile = File.separator;
+            String separateFile = File.separator;
             String imageFileName = getImageFileName(candidateID);
 
             String webPath = new File(path).getParentFile().getParentFile().getPath()
-                    + seperateFile + "web";
-            String savePath = webPath + seperateFile + saveDir;
+                    + separateFile + "web";
+            String savePath = webPath + separateFile + saveDir;
 
             if (!createDir(savePath)) {
                 throw new Exception();
             }
 
-            String filePath = savePath + seperateFile + imageFileName;
+            String filePath = savePath + separateFile + imageFileName;
             boolean check = saveImageToFile(file, filePath);
             if (!check) {
                 throw new Exception();

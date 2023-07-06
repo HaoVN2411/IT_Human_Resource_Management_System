@@ -23,8 +23,7 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author flami 
- * This servlet class update candidate, only update candidate when
+ * @author flami This servlet class update candidate, only update candidate when
  * status contract this candidate is 'REJECTED'
  */
 @MultipartConfig(
@@ -46,6 +45,7 @@ public class UpdateCandidateController extends HttpServlet {
      */
     private final static String ERROR = "createCandidate.jsp";
     private final static String SUCCESS = "searchCandidate.jsp";
+    private final static String URL = "main.jsp";
     private final static String SAVE_DIR = "imageCandidate";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -55,7 +55,7 @@ public class UpdateCandidateController extends HttpServlet {
         String url = ERROR;
         boolean check = true;
         String messageError;
-        Candidate candidate = null;
+        CandidateDTO candidate = null;
 
         try {
             CandidateDAO dao = new CandidateDAO();
@@ -137,7 +137,7 @@ public class UpdateCandidateController extends HttpServlet {
             String path = getServletContext().getRealPath("/");
             String imagePath = Helper.getPath(candidateID, SAVE_DIR);
 
-            candidate = new Candidate(candidateID, fullName, gender, dateOfBirth,
+            candidate = new CandidateDTO(candidateID, fullName, gender, dateOfBirth,
                     phoneNumber, email, address, humanId, nationality, notation, imagePath, creatorID, isActive);
             if (check) {
                 if (file != null) {
@@ -155,7 +155,8 @@ public class UpdateCandidateController extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            request.getRequestDispatcher(url).forward(request, response);
+            request.setAttribute("URL", url);
+            request.getRequestDispatcher(URL).forward(request, response);
         }
     }
 

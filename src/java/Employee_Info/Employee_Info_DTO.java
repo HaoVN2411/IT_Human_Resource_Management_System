@@ -5,39 +5,67 @@
  */
 package Employee_Info;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 /**
  *
- * @author Hào Cute
+ * @author flami
  */
 public class Employee_Info_DTO {
 
     private String fullName;
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
     private String phoneNumber;
+    private String gender;
     private String email;
     private String address;
     private String humanId;
     private String nationality;
     private String employeeID;
-    private String contractId;
+    private String image;
+    private String manageBy;
+    private boolean isActive;
+    private String contractID;
 
-    public Employee_Info_DTO() {
-    }
-
-    public Employee_Info_DTO(String fullName, Date dateOfBirth, String phoneNumber, String email, String address, String humanId, String nationality, String employeeID, String contractId) {
+    public Employee_Info_DTO(String fullName, LocalDate dateOfBirth, String phoneNumber,
+            String gender, String email, String address, String humanId, String nationality,
+            String employeeID, String image, String manageBy, boolean isActive, String contractID) {
         this.fullName = fullName;
         this.dateOfBirth = dateOfBirth;
         this.phoneNumber = phoneNumber;
+        this.gender = gender;
         this.email = email;
         this.address = address;
         this.humanId = humanId;
         this.nationality = nationality;
         this.employeeID = employeeID;
-        this.contractId = contractId;
+        this.image = image;
+        this.manageBy = manageBy;
+        this.isActive = isActive;
+        this.contractID = contractID;
+    }
+    
+        public Employee_Info_DTO(String fullName, LocalDate dateOfBirth, String phoneNumber,
+            String gender, String email, String address, String humanId, String nationality,
+            String employeeID, String image, String manageBy, boolean isActive) {
+        this.fullName = fullName;
+        this.dateOfBirth = dateOfBirth;
+        this.phoneNumber = phoneNumber;
+        this.gender = gender;
+        this.email = email;
+        this.address = address;
+        this.humanId = humanId;
+        this.nationality = nationality;
+        this.employeeID = employeeID;
+        this.image = image;
+        this.manageBy = manageBy;
+        this.isActive = isActive;
     }
 
+    public Employee_Info_DTO(){
+    }
+    
     public String getFullName() {
         return fullName;
     }
@@ -46,11 +74,11 @@ public class Employee_Info_DTO {
         this.fullName = fullName;
     }
 
-    public Date getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
@@ -60,6 +88,14 @@ public class Employee_Info_DTO {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     public String getEmail() {
@@ -102,12 +138,37 @@ public class Employee_Info_DTO {
         this.employeeID = employeeID;
     }
 
-    public String getContractId() {
-        return contractId;
+    public String getImage() {
+        return image;
     }
 
-    public void setContractId(String contractId) {
-        this.contractId = contractId;
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getManageBy() {
+        return manageBy;
+    }
+
+    public void setManageBy(String manageBy) {
+        this.manageBy = manageBy;
+    }
+
+    public boolean isIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(boolean isActive) {
+        this.isActive = isActive;
+    }
+
+    public String getContractID() {
+        return contractID;
+    }
+
+    public void setContractID(String contractID) {
+        this.contractID = contractID;
     }
 
 }
+

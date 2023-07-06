@@ -59,9 +59,21 @@ public class MainController extends HttpServlet {
 
     private static final String UPDATE_CONTRACT = "Update Contract";
     private static final String UPDATE_CONTRACT_CONTROLLER = "UpdateTemporaryCantractController";
-    
+
     private static final String APPLY_CONTRACT = "Apply Contract";
     private static final String APPLY_CONTRACT_CONTROLLER = "ApplyTemporaryContract";
+
+    private static final String SHOW_INFORMATION = "Show Information";
+    private static final String SHOW_INFORMATION_CONTROLLER = "ViewInformationController";
+
+    private static final String VIEW_EMPLOYEE_CONTRACT = "View Employee Contract Detail";
+    private static final String VIEW_EMPLOYEE_CONTRACT_CONTROLLER = "ViewEmployeeContractController";
+
+    private static final String SEARCH_EMPLOYEE = "Search Employee";
+    private static final String SEARCH_EMPLOYEE_CONTROLLER = "SearchEmployeeController";
+    
+    private static final String SHOW_EMPLOYEE_DETAIL = "Show Employee Detail";
+    private static final String SHOW_EMPLOYEE_DETAIL_CONTROLLER = "ShowEmployeeDetailController";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -96,6 +108,14 @@ public class MainController extends HttpServlet {
                 url = UPDATE_CONTRACT_CONTROLLER;
             } else if (APPLY_CONTRACT.equals(action)) {
                 url = APPLY_CONTRACT_CONTROLLER;
+            } else if (SHOW_INFORMATION.equals(action)) {
+                url = SHOW_INFORMATION_CONTROLLER;
+            } else if (VIEW_EMPLOYEE_CONTRACT.equals(action)) {
+                url = VIEW_EMPLOYEE_CONTRACT_CONTROLLER;
+            }else if (SEARCH_EMPLOYEE.equals(action)) {
+                url = SEARCH_EMPLOYEE_CONTROLLER;
+            }else if (SHOW_EMPLOYEE_DETAIL.equals(action)) {
+                url = SHOW_EMPLOYEE_DETAIL_CONTROLLER;
             }
         } catch (Exception e) {
             log("Error at MainController" + e.toString());

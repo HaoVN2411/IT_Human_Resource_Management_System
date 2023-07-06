@@ -4,7 +4,7 @@
  */
 package Contract;
 
-import Candidate.Candidate;
+import Candidate.CandidateDTO;
 import Candidate.CandidateDAO;
 import User_Login_Controller.User_Login_DTO;
 import java.io.IOException;
@@ -19,8 +19,8 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author flami
- * This servlet class use to search temporaryContract from database 
+ * @author flami This servlet class use to search temporaryContract from
+ * database
  */
 @WebServlet(name = "SearchContractController", urlPatterns = {"/SearchContractController"})
 public class SearchContractController extends HttpServlet {
@@ -36,6 +36,7 @@ public class SearchContractController extends HttpServlet {
      */
     private final static String ERROR = "searchContract.jsp";
     private final static String SUCCESS = "searchContract.jsp";
+    private final static String URL = "main.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -55,7 +56,7 @@ public class SearchContractController extends HttpServlet {
 
             ContractDAO contractDAO = new ContractDAO();
             //get list of candidate from database
-            List<CandidateContract> listCandidateContract = contractDAO.getListCandidateContract(
+            List<CandidateContractDTO> listCandidateContract = contractDAO.getListCandidateContract(
                     search, statusContract, userLoginID, roleName);
             if (!listCandidateContract.isEmpty()) {
                 //return list contain candidate and temporary contract of this candidate
@@ -64,10 +65,12 @@ public class SearchContractController extends HttpServlet {
             }
             request.setAttribute("STATUS_CONTRACT", statusContract);
             request.setAttribute("search", search);
+            request.setAttribute("action", "a");
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            request.getRequestDispatcher(url).forward(request, response);
+            request.setAttribute("URL", url);
+            request.getRequestDispatcher(URL).forward(request, response);
         }
     }
 

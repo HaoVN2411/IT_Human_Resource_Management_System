@@ -17,8 +17,8 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author flami
- * This servlet class use to handle search Candidate and give candidates from database
+ * @author flami This servlet class use to handle search CandidateDTO and give
+ * candidates from database
  */
 @WebServlet(name = "SearchCandidateController", urlPatterns = {"/SearchCandidateController"})
 public class SearchCandidateController extends HttpServlet {
@@ -34,6 +34,7 @@ public class SearchCandidateController extends HttpServlet {
      */
     private final static String ERROR = "searchCandidate.jsp";
     private final static String SUCCESS = "searchCandidate.jsp";
+    private final static String URL = "main.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -52,17 +53,17 @@ public class SearchCandidateController extends HttpServlet {
             creatorID = userLogin.getEmployeeId();
 
             CandidateDAO candidateDAO = new CandidateDAO();
-            //get list Candidate from database
-            List<Candidate> listCandidate = candidateDAO.getListCandidate(search, creatorID);
+            //get list CandidateDTO from database
+            List<CandidateDTO> listCandidate = candidateDAO.getListCandidate(search, creatorID);
             if (!listCandidate.isEmpty()) {
                 request.setAttribute("LIST_CANDIDATE", listCandidate);
                 url = SUCCESS;
-
             }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            request.getRequestDispatcher(url).forward(request, response);
+            request.setAttribute("URL", url);
+            request.getRequestDispatcher(URL).forward(request, response);
         }
 
     }

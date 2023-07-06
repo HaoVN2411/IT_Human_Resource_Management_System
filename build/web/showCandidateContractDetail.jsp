@@ -5,8 +5,8 @@
 --%>
 
 <%@page import="User_Login_Controller.User_Login_DTO"%>
-<%@page import="Contract.TemporaryContract"%>
-<%@page import="Candidate.Candidate"%>
+<%@page import="Contract.TemporaryContractDTO"%>
+<%@page import="Candidate.CandidateDTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -16,9 +16,9 @@
     </head>
     <body>
         <%
-            Candidate candidateDetail = (Candidate) request.getAttribute("CANDIDATE");
+            CandidateDTO candidateDetail = (CandidateDTO) request.getAttribute("CANDIDATE");
             if (candidateDetail != null) {
-                TemporaryContract tempContract = (TemporaryContract) request.getAttribute("TEMPORARY_CONTRACT");
+                TemporaryContractDTO tempContract = (TemporaryContractDTO) request.getAttribute("TEMPORARY_CONTRACT");
                 String status;
                 if (tempContract == null)
                     status = "None";
@@ -44,6 +44,7 @@
         <%=tempContract.getAllowance()%><br/>
         <%=tempContract.getStartDate()%><br/>
         <%=tempContract.getDescription()%><br/>
+        <%=tempContract.getReason()%><br/>
         <%
             String roleName;
             HttpSession Session = request.getSession();
@@ -57,7 +58,7 @@
             <input type="submit" name="action" value="Print Contract"/>
             <input type="submit" name="action" value="Approve Contract"/>
             <input type="submit" name="action" value="Reject Contract"/>
-            <div><input placeholder="Discription.." type="text" name="discription"></div>            
+            <div><input placeholder="Description.." type="text" name="description"></div>            
         </form>
         <%
         } else if (roleName.equals("HRS")) {

@@ -5,8 +5,8 @@
 --%>
 
 <%@page import="Candidate.Helper"%>
-<%@page import="Contract.TemporaryContract"%>
-<%@page import="Candidate.Candidate"%>
+<%@page import="Contract.TemporaryContractDTO"%>
+<%@page import="Candidate.CandidateDTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -56,8 +56,8 @@
 
     <body>
         <%
-            Candidate candidate = (Candidate) request.getAttribute("CANDIDATE");
-            TemporaryContract tempContract = (TemporaryContract) request.getAttribute("TEMPORARY_CONTRACT");
+            CandidateDTO candidate = (CandidateDTO) request.getAttribute("CANDIDATE");
+            TemporaryContractDTO tempContract = (TemporaryContractDTO) request.getAttribute("TEMPORARY_CONTRACT");
 
             if (candidate != null && tempContract != null) {
 

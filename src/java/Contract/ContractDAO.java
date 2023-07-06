@@ -4,7 +4,7 @@
  */
 package Contract;
 
-import Candidate.Candidate;
+import Candidate.CandidateDTO;
 import Candidate.Helper;
 import sample.Utils.DBUtils;
 import static java.rmi.server.LogStream.log;
@@ -23,7 +23,7 @@ import java.util.List;
  */
 public class ContractDAO {
 
-    public boolean insertContractCandidate(TemporaryContract contract) throws SQLException {
+    public boolean insertContractCandidate(TemporaryContractDTO contract) throws SQLException {
         boolean check = false;
         Connection conn = null;
         PreparedStatement stm = null;
@@ -33,7 +33,7 @@ public class ContractDAO {
             if (conn != null) {
                 String sql = "INSERT INTO TemporaryContract "
                         + "(contractId, candidateID, startDate, salary, allowance,"
-                        + " discription, creatorID, approverID, status)"
+                        + " description, creatorID, approverID, status)"
                         + " VALUES (?,?,?,?,?,?,?,?,?)";
                 stm = conn.prepareStatement(sql);
                 stm.setString(1, contract.getContractID());
@@ -114,9 +114,9 @@ public class ContractDAO {
         return nextID;
     }
 
-    public List<CandidateContract> getListCandidateContract(String search, String status,
+    public List<CandidateContractDTO> getListCandidateContract(String search, String status,
             String userLoginID, String roleName) throws SQLException {
-        List<CandidateContract> list = new ArrayList<>();
+        List<CandidateContractDTO> list = new ArrayList<>();
         Connection conn = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
@@ -129,7 +129,7 @@ public class ContractDAO {
             if (conn != null) {
                 if (status.equals("ALL")) {
                     String sql = "SELECT b.contractId,b.candidateID, b.startDate, b.salary, b.allowance,"
-                            + " b.discription, b.creatorID, b.approverID, b.status, b.reason,"
+                            + " b.description, b.creatorID, b.approverID, b.status, b.reason,"
                             + " a.fullName, a.gender,a.DateOfBirth, a.phoneNumber, a.email,"
                             + " a.address, a.humanID, a.nationality,a.notation,a.image,a.creatorID "
                             + " FROM Candidate As a, TemporaryContract AS b"
@@ -139,7 +139,7 @@ public class ContractDAO {
                     stm.setString(1, "%" + search + "%");
                 } else {
                     String sql = "SELECT b.contractId, b.startDate,b.candidateID, b.salary, b.allowance,"
-                            + "b.discription, b.creatorID, b.approverID, b.status, b.reason,"
+                            + "b.description, b.creatorID, b.approverID, b.status, b.reason,"
                             + "a.fullName, a.gender,a.DateOfBirth, a.phoneNumber, a.email, "
                             + "a.address, a.humanID, a.nationality,a.notation,a.image,a.creatorID "
                             + "FROM Candidate As a, TemporaryContract AS b "
@@ -160,16 +160,16 @@ public class ContractDAO {
                         LocalDate startDate = date.toLocalDate();
                         float salary = rs.getFloat("salary");
                         float allowance = rs.getFloat("allowance");
-                        String discription = rs.getString("discription");
+                        String description = rs.getString("description");
 
                         String approverID = rs.getString("approverID");
                         String candidateID = rs.getString("candidateID");
                         String statusCon = rs.getString("status");
                         String reason = rs.getString("reason");
 
-                        TemporaryContract tempContract = new TemporaryContract(
+                        TemporaryContractDTO tempContract = new TemporaryContractDTO(
                                 idCon, startDate, salary, allowance,
-                                approverID, creatorID, discription,
+                                approverID, creatorID, description,
                                 candidateID, statusCon, reason);
 
                         String id = rs.getString("candidateID");
@@ -186,10 +186,10 @@ public class ContractDAO {
                         String notation = rs.getString("notation");
                         String image = rs.getString("image");
 
-                        Candidate candidate = new Candidate(id, fullName, gender, dob,
+                        CandidateDTO candidate = new CandidateDTO(id, fullName, gender, dob,
                                 phoneNumber, email, address, humanID, nationality,
                                 notation, image, creatorID, true);
-                        list.add(new CandidateContract(tempContract, candidate));
+                        list.add(new CandidateContractDTO(tempContract, candidate));
                     }
                 }
             }
@@ -209,8 +209,8 @@ public class ContractDAO {
         return list;
     }
 
-    public List<Candidate> getListCandidate(String search, String status) throws SQLException {
-        List<Candidate> list = new ArrayList<>();
+    public List<CandidateDTO> getListCandidate(String search, String status) throws SQLException {
+        List<CandidateDTO> list = new ArrayList<>();
         Connection conn = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
@@ -242,7 +242,7 @@ public class ContractDAO {
                     String creatorID = rs.getString("creatorID");
                     Boolean isActive = rs.getBoolean("isActive");
 
-                    list.add(new Candidate(id, fullName, gender, dob,
+                    list.add(new CandidateDTO(id, fullName, gender, dob,
                             phoneNumber, email, address, humanID,
                             nationality, notation, image, creatorID, isActive));
                 }
@@ -263,42 +263,7 @@ public class ContractDAO {
         return list;
     }
 
-    public boolean isExistCandidate(String candidateID) throws SQLException {
-        Connection conn = null;
-        PreparedStatement stm = null;
-        ResultSet rs = null;
-        String contractID = null;
-        try {
-            conn = DBUtils.getConnection();
-            if (conn != null) {
-                String sql = "SELECT contractID FROM TemporaryContract "
-                        + "WHERRE candidateID = ?";
-                stm = conn.prepareStatement(sql);
-                stm.setString(1, candidateID);
-                rs = stm.executeQuery();
-                if (rs.next()) {
-                    contractID = rs.getString("contractID").trim();
-                }
-            }
-        } catch (IllegalArgumentException i) {
-            i.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (conn != null) {
-                conn.close();
-            }
-            if (rs != null) {
-                rs.close();
-            }
-            if (stm != null) {
-                stm.close();
-            }
-        }
-        return contractID == null ? false : true;
-    }
-
-    public boolean updateTemporaryContract(TemporaryContract tempContract) throws SQLException {
+    public boolean updateTemporaryContract(TemporaryContractDTO tempContract) throws SQLException {
         boolean check = false;
         Connection conn = null;
         PreparedStatement stm = null;
@@ -308,7 +273,7 @@ public class ContractDAO {
             if (conn != null) {
                 String sql = "UPDATE TemporaryContract "
                         + "SET candidateID=?, startDate=?, salary=?, allowance=?,"
-                        + " discription=?, creatorID=?, approverID=?, status=?, reason=?"
+                        + " description=?, creatorID=?, approverID=?, status=?, reason=?"
                         + " WHERE contractID = ?";
                 stm = conn.prepareStatement(sql);
                 stm.setString(1, tempContract.getCandidateID());
@@ -338,8 +303,8 @@ public class ContractDAO {
         return check;
     }
 
-    public Candidate getACandidate(String candidateID) throws SQLException {
-        Candidate candidate = null;
+    public CandidateDTO getACandidate(String candidateID) throws SQLException {
+        CandidateDTO candidate = null;
         Connection conn = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
@@ -371,7 +336,7 @@ public class ContractDAO {
                     String creatorID = rs.getString("creatorID");
                     Boolean isActive = rs.getBoolean("isActive");
 
-                    candidate = new Candidate(id, fullName, gender, dob,
+                    candidate = new CandidateDTO(id, fullName, gender, dob,
                             phoneNumber, email, address, humanID,
                             nationality, notation, image, creatorID, isActive);
                 }
@@ -392,16 +357,16 @@ public class ContractDAO {
         return candidate;
     }
 
-    public TemporaryContract getTemporaryContract(String contractID) throws SQLException {
+    public TemporaryContractDTO getTemporaryContract(String contractID) throws SQLException {
         Connection conn = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
-        TemporaryContract tempContract = null;
+        TemporaryContractDTO tempContract = null;
         try {
             conn = DBUtils.getConnection();
             if (conn != null) {
                 String sql = "SELECT candidateID, startDate, salary, allowance,"
-                        + " discription, creatorID, approverID, status, reason FROM TemporaryContract "
+                        + " description, creatorID, approverID, status, reason FROM TemporaryContract "
                         + "WHERE contractID = ?";
                 stm = conn.prepareStatement(sql);
                 stm.setString(1, contractID);
@@ -412,16 +377,16 @@ public class ContractDAO {
                     LocalDate startDate = date.toLocalDate();
                     float salary = rs.getFloat("salary");
                     float allowance = rs.getFloat("allowance");
-                    String discription = rs.getString("discription");
+                    String description = rs.getString("description");
                     String creatorID = rs.getString("creatorID");
                     String approverID = rs.getString("approverID");
                     String candidateID = rs.getString("candidateID");
                     String statusCon = rs.getString("status");
                     String reason = rs.getString("reason");
 
-                    tempContract = new TemporaryContract(
+                    tempContract = new TemporaryContractDTO(
                             contractID, startDate, salary, allowance,
-                            approverID, creatorID, discription,
+                            approverID, creatorID, description,
                             candidateID, statusCon, reason);
                 }
             }
@@ -441,33 +406,6 @@ public class ContractDAO {
             }
         }
         return tempContract;
-    }
-
-    public boolean deleteTemporaryContract(String tempContractID) throws SQLException {
-        boolean check = false;
-        Connection conn = null;
-        PreparedStatement stm = null;
-
-        try {
-            conn = DBUtils.getConnection();
-            if (conn != null) {
-                String sql = "UPDATE TemporaryContract SET status=null WHERE contractID = ?";
-                stm = conn.prepareStatement(sql);
-                stm.setString(1, tempContractID);
-
-                check = stm.executeUpdate() > 0;
-            }
-        } catch (Exception e) {
-            log("Error at Insert: " + e.toString());
-        } finally {
-            if (stm != null) {
-                stm.close();
-            }
-            if (conn != null) {
-                conn.close();
-            }
-        }
-        return check;
     }
 
     public String getNewStaffID(String CONTRACT_ID_FORMAT) throws SQLException {
@@ -552,7 +490,7 @@ public class ContractDAO {
         return nextID;
     }
 
-    public boolean insertEmployeeContract(TemporaryContract contract) throws SQLException {
+    public boolean insertEmployeeContract(TemporaryContractDTO contract) throws SQLException {
         boolean check = false;
         Connection conn = null;
         PreparedStatement stm = null;
@@ -561,7 +499,7 @@ public class ContractDAO {
             conn = DBUtils.getConnection();
             if (conn != null) {
                 String sql = "INSERT INTO EmployeeContract (contractId, employeeID, startDate, salary, allowance, "
-                        + "discription, sizeImage, creatorID, approverID, isActive) "
+                        + "pathImage, sizeImage, creatorID, approverID, isActive) "
                         + "VALUES (?,?,?,?,?,?,?,?,?,?)";
                 stm = conn.prepareStatement(sql);
                 stm.setString(1, contract.getContractID());
@@ -570,7 +508,7 @@ public class ContractDAO {
                 stm.setDate(3, startDate);
                 stm.setFloat(4, contract.getSalary());
                 stm.setFloat(5, contract.getAllowance());
-                stm.setString(6, contract.getDescription());
+                stm.setString(6, contract.getPathImage());
                 stm.setInt(7, contract.getSizeImage());
                 stm.setString(8, contract.getCreatorID());
                 stm.setString(9, contract.getApproverID());
@@ -591,7 +529,7 @@ public class ContractDAO {
         return check;
     }
 
-    public boolean insertEmployee(Candidate candidate) throws SQLException {
+    public boolean insertEmployee(CandidateDTO candidate) throws SQLException {
         boolean check = false;
         Connection conn = null;
         PreparedStatement stm = null;
@@ -632,16 +570,17 @@ public class ContractDAO {
         return check;
     }
     private final String password = "123@123a"; 
-    public boolean insertStaffToUserLogin(Candidate candidate) throws SQLException {
+    public boolean insertStaffToUserLogin(CandidateDTO candidate) throws SQLException {
         boolean check = false;
         Connection conn = null;
         PreparedStatement stm = null;
         String userID = Helper.generateString(candidate.getFullName())+candidate.getId();
+        userID = userID.toLowerCase();
         try {
             conn = DBUtils.getConnection();
             if (conn != null) {
                 String sql = "INSERT INTO UserLogin (userID, password, isActive,"
-                        + " roleID, employeeID) VALUES (?,?,1,'3',?)";
+                        + " roleID, employeeID) VALUES (?,?,1,'1',?)";
                 stm = conn.prepareStatement(sql);
                 stm.setString(1, userID);
                 stm.setString(2, password);

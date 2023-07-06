@@ -4,7 +4,7 @@
  */
 package Contract;
 
-import Candidate.Candidate;
+import Candidate.CandidateDTO;
 import User_Login_Controller.User_Login_DTO;
 import java.io.File;
 import java.io.FileInputStream;
@@ -22,8 +22,7 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author flami 
- * This servlet class use to create temporary contract from HRS
+ * @author flami This servlet class use to create temporary contract from HRS
  */
 @WebServlet(name = "CreateContractController", urlPatterns = {"/CreateContractController"})
 public class CreateContractController extends HttpServlet {
@@ -46,6 +45,7 @@ public class CreateContractController extends HttpServlet {
     private static final String SUCCESS = "searchCandidate.jsp";
     private static final String approverID = "HM1111";
     private final static String CONTRACT_ID_FORMAT = "TC1111";
+    private final static String URL = "main.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -66,7 +66,7 @@ public class CreateContractController extends HttpServlet {
 
             candidateID = request.getParameter("candidateID");
 
-            Candidate candidate = dao.getACandidate(candidateID);
+            CandidateDTO candidate = dao.getACandidate(candidateID);
 
             contractID = dao.getNewIDTemporaryContract(CONTRACT_ID_FORMAT);
             String dateString = request.getParameter("startDate").trim();
@@ -74,7 +74,7 @@ public class CreateContractController extends HttpServlet {
             startDate = LocalDate.parse(dateString, formatter);
 
             String salaryString = request.getParameter("salary");
-            description = request.getParameter("discription");
+            description = request.getParameter("description");
 
             ValidationInputTemporaryContract validation = new ValidationInputTemporaryContract();
 
@@ -97,7 +97,7 @@ public class CreateContractController extends HttpServlet {
             User_Login_DTO userLogin = (User_Login_DTO) session.getAttribute("USER_LOGIN");
             creatorID = userLogin.getEmployeeId();
 
-            TemporaryContract contract = new TemporaryContract(
+            TemporaryContractDTO contract = new TemporaryContractDTO(
                     contractID, startDate, salary, allowance,
                     approverID, creatorID, description,
                     candidateID, null, "");
@@ -119,7 +119,8 @@ public class CreateContractController extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            request.getRequestDispatcher(url).forward(request, response);
+            request.setAttribute("URL", url);
+            request.getRequestDispatcher(URL).forward(request, response);
         }
     }
 

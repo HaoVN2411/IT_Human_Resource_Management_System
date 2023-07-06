@@ -4,7 +4,7 @@
  */
 package Contract;
 
-import Candidate.Candidate;
+import Candidate.CandidateDTO;
 import Candidate.CandidateDAO;
 import Candidate.CandidateError;
 import Candidate.Helper;
@@ -25,8 +25,7 @@ import javax.servlet.http.Part;
 
 /**
  *
- * @author flami 
- * This class use to update temporary contract
+ * @author flami This class use to update temporary contract
  */
 @WebServlet(name = "UpdateTemporaryCantractController", urlPatterns = {"/UpdateTemporaryCantractController"})
 public class UpdateTemporaryCantractController extends HttpServlet {
@@ -43,6 +42,7 @@ public class UpdateTemporaryCantractController extends HttpServlet {
     private final static String ERROR = "updateContract.jsp";
     private final static String SUCCESS = "searchContract.jsp";
     private final static String SAVE_DIR = "imageCandidate";
+    private final static String URL = "main.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -50,7 +50,7 @@ public class UpdateTemporaryCantractController extends HttpServlet {
         String url = ERROR;
         boolean check = true;
         String messageError;
-        Candidate candidate = null;
+        CandidateDTO candidate = null;
 
         try {
             //Candidate
@@ -132,7 +132,7 @@ public class UpdateTemporaryCantractController extends HttpServlet {
             String path = getServletContext().getRealPath("/");
             String imagePath = Helper.getPath(candidateID, SAVE_DIR);//path contain img
 
-            candidate = new Candidate(candidateID, fullName, gender, dateOfBirth,
+            candidate = new CandidateDTO(candidateID, fullName, gender, dateOfBirth,
                     phoneNumber, email, address, humanId, nationality, notation,
                     imagePath, creatorID, isActive);
 
@@ -146,7 +146,7 @@ public class UpdateTemporaryCantractController extends HttpServlet {
             String salaryString = request.getParameter("salary");
             String description = request.getParameter("discription");
             String contractID = request.getParameter("contractID");
-            TemporaryContract temp = daoCont.getTemporaryContract(contractID);
+            TemporaryContractDTO temp = daoCont.getTemporaryContract(contractID);
             float allowance = temp.getAllowance();
             String approverID = temp.getApproverID();
             float salary = 0;
@@ -167,7 +167,7 @@ public class UpdateTemporaryCantractController extends HttpServlet {
                 check = false;
             }
 
-            TemporaryContract contract = new TemporaryContract(
+            TemporaryContractDTO contract = new TemporaryContractDTO(
                     contractID, startDate, salary, allowance,
                     approverID, creatorID, description,
                     candidateID, temp.getStatus(), temp.getReason());
@@ -190,7 +190,8 @@ public class UpdateTemporaryCantractController extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            request.getRequestDispatcher(url).forward(request, response);
+            request.setAttribute("URL", url);
+            request.getRequestDispatcher(URL).forward(request, response);
         }
     }
 

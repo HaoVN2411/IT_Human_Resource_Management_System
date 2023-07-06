@@ -7,8 +7,8 @@
 
 <%@page import="java.time.LocalDate"%>
 <%@page import="Contract.ContractError"%>
-<%@page import="Contract.TemporaryContract"%>
-<%@page import="Candidate.Candidate"%>
+<%@page import="Contract.TemporaryContractDTO"%>
+<%@page import="Candidate.CandidateDTO"%>
 <%@page import="Candidate.CandidateError"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -30,14 +30,14 @@
                 conErr = new ContractError();
             }
 
-            Candidate candidate = (Candidate) request.getAttribute("CANDIDATE");
+            CandidateDTO candidate = (CandidateDTO) request.getAttribute("CANDIDATE");
             if (candidate == null) {
-                candidate = (Candidate) session.getAttribute("CANDIDATE");
+                candidate = (CandidateDTO) session.getAttribute("CANDIDATE");
             }
 
-            TemporaryContract tempContract = (TemporaryContract) request.getAttribute("TEMPORARY_CONTRACT");
+            TemporaryContractDTO tempContract = (TemporaryContractDTO) request.getAttribute("TEMPORARY_CONTRACT");
             if (tempContract == null) {
-                tempContract = (TemporaryContract) session.getAttribute("TEMPORARY_CONTRACT");
+                tempContract = (TemporaryContractDTO) session.getAttribute("TEMPORARY_CONTRACT");
             }
             if (tempContract != null && candidate != null) {
         %>

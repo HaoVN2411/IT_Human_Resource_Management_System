@@ -4,7 +4,7 @@
  */
 package Contract;
 
-import Candidate.Candidate;
+import Candidate.CandidateDTO;
 import Candidate.CandidateDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -16,8 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author flami
- * This servlet class use to show information about temporary contract of candidate 
+ * @author flami This servlet class use to show information about temporary
+ * contract of candidate
  */
 @WebServlet(name = "ShowTemporaryContractDetailController", urlPatterns = {"/ShowTemporaryContractDetailController"})
 public class ShowTemporaryContractDetailController extends HttpServlet {
@@ -33,6 +33,7 @@ public class ShowTemporaryContractDetailController extends HttpServlet {
      */
     private final static String ERROR = "searchContract.jsp";
     private final static String SUCCESS = "showCandidateContractDetail.jsp";
+    private final static String URL = "main.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -46,11 +47,11 @@ public class ShowTemporaryContractDetailController extends HttpServlet {
             String statusContract = (String) request.getAttribute("statusContract");
             ContractDAO dao = new ContractDAO();
             //get candidate and temporary contract
-            Candidate candidate = dao.getACandidate(candidateID);
-            TemporaryContract tempContract = dao.getTemporaryContract(contractID);
+            CandidateDTO candidate = dao.getACandidate(candidateID);
+            TemporaryContractDTO tempContract = dao.getTemporaryContract(contractID);
 
             if (candidate != null && tempContract != null) {
-               //return candidate and temporary contract of this candidate
+                //return candidate and temporary contract of this candidate
                 request.setAttribute("CANDIDATE", candidate);
                 request.setAttribute("TEMPORARY_CONTRACT", tempContract);
                 url = SUCCESS;
@@ -60,7 +61,8 @@ public class ShowTemporaryContractDetailController extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            request.getRequestDispatcher(url).forward(request, response);
+            request.setAttribute("URL", url);
+            request.getRequestDispatcher(URL).forward(request, response);
         }
 
     }

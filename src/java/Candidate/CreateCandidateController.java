@@ -25,8 +25,7 @@ import javax.servlet.http.Part;
 
 /**
  *
- * @author flami
- * this servlet class use to create candidate
+ * @author flami this servlet class use to create candidate
  */
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024 * 1, // 1 MB
@@ -47,6 +46,7 @@ public class CreateCandidateController extends HttpServlet {
      */
     private final static String ERROR = "createCandidate.jsp";
     private final static String SUCCESS = "searchCandidate.jsp";
+    private final static String URL = "main.jsp";
     private final static String SAVE_DIR = "imageCandidate";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -56,7 +56,7 @@ public class CreateCandidateController extends HttpServlet {
         String url = ERROR;
         boolean check = true;
         String messageError;
-        Candidate candidate = null;
+        CandidateDTO candidate = null;
 
         try {
             CandidateDAO dao = new CandidateDAO();
@@ -84,7 +84,7 @@ public class CreateCandidateController extends HttpServlet {
             }
 
             boolean isActive = true;
-            
+
             CandidateError candidateError = new CandidateError();
             ValidationInput errorChecking = new ValidationInput();
 
@@ -143,14 +143,14 @@ public class CreateCandidateController extends HttpServlet {
                 candidateError.setImageError("Error in save image to server!!!");
                 check = false;
             }
-            
-            candidate = new Candidate(candidateID, fullName, gender, dateOfBirth,
+
+            candidate = new CandidateDTO(candidateID, fullName, gender, dateOfBirth,
                     phoneNumber, email, address, humanId, nationality, notation, imagePath, creatorID, isActive);
             if (check) {
                 //save img
                 boolean check2 = Helper.saveImage(candidateID, file, path, SAVE_DIR);
                 //insert to database
-                check = dao.insertContractCandidate(candidate);
+                check = dao.insertCandidate(candidate);
                 url = SUCCESS;
             } else {
                 request.setAttribute("CANDIDATE", candidate);
@@ -160,7 +160,8 @@ public class CreateCandidateController extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            request.getRequestDispatcher(url).forward(request, response);
+            request.setAttribute("URL", url);
+            request.getRequestDispatcher(URL).forward(request, response);
         }
     }
 

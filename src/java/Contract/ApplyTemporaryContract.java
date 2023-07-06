@@ -4,7 +4,7 @@
  */
 package Contract;
 
-import Candidate.Candidate;
+import Candidate.CandidateDTO;
 import Candidate.CandidateDAO;
 import Candidate.CandidateError;
 import Candidate.Helper;
@@ -42,6 +42,7 @@ public class ApplyTemporaryContract extends HttpServlet {
     private final static String SAVE_DIR = "imageContract";
     private final static String EMPLOYEE_CONTRACT_ID_FORMAT = "EC1111";
     private final static String STAFF_ID_FORMAT = "SS1111";
+    private final static String URL = "main.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -51,7 +52,6 @@ public class ApplyTemporaryContract extends HttpServlet {
             String statusContract = "";
             String messageError;
             boolean check = true;
-            CandidateError candidateError = new CandidateError();
             ValidationInput errorChecking = new ValidationInput();
 
             Part file = request.getPart("fileContract");
@@ -59,11 +59,11 @@ public class ApplyTemporaryContract extends HttpServlet {
             String contractID = (String) request.getParameter("contractID");
 
             CandidateDAO daoCand = new CandidateDAO();
-            Candidate candidate = daoCand.getACandidate(candidateID);//get a candidate from database
+            CandidateDTO candidate = daoCand.getACandidate(candidateID);//get a candidate from database
 
             ContractDAO daoCont = new ContractDAO();
             //get a temporary contract of this candidate from database
-            TemporaryContract tempCont = daoCont.getTemporaryContract(contractID);
+            TemporaryContractDTO tempCont = daoCont.getTemporaryContract(contractID);
             statusContract = tempCont.getStatus();
 
             if (tempCont.getStatus().equals("APPROVED")) {
@@ -100,7 +100,7 @@ public class ApplyTemporaryContract extends HttpServlet {
                 tempCont.setContractID(employeeContractID);
                 tempCont.setCandidateID(staffID);
                 tempCont.setSizeImage(count);
-                tempCont.setDescription(SAVE_DIR + seperateFile + staffID);
+                tempCont.setPathImage(SAVE_DIR + seperateFile + staffID);
                 //Insert new employee and contract 
                 if (daoCont.insertEmployee(candidate)
                         && daoCont.insertEmployeeContract(tempCont)) {

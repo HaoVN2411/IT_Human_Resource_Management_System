@@ -4,7 +4,7 @@
     Author     : flami
 --%>
 
-<%@page import="Candidate.Candidate"%>
+<%@page import="Candidate.CandidateDTO"%>
 <%@page import="Candidate.CandidateError"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -20,13 +20,20 @@
             if (candidateError == null) {
                 candidateError = new CandidateError();
             }
-
-            Candidate candidate = (Candidate) session.getAttribute("CANDIDATE");
+            
+            CandidateDTO candidate = (CandidateDTO) session.getAttribute("CANDIDATE");
             if (candidate == null) {
-                candidate = (Candidate) request.getAttribute("CANDIDATE");
-                candidate = new Candidate();
+                candidate = (CandidateDTO) request.getAttribute("CANDIDATE");
+//                
+                if (candidate == null) {
+                    candidate = new CandidateDTO();
+        %>
+        <h1>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</h1>
+        <%
+                }
             }
         %>
+
         <div class="container">  
             <form id="contact" action="MainController" method="post" enctype="multipart/form-data">
                 <h3 style="text-align: center;">CANDIDATE</h3>
@@ -121,7 +128,7 @@
                 </fieldset>
                 <fieldset>
                     <input name="candidateID" type="hidden" value="<%=candidate.getId()%>">
-                    <input type="hidden" name="creatorID" value="<%=candidate.getCreatorID() %>" >
+                    <input type="hidden" name="creatorID" value="<%=candidate.getCreatorID()%>" >
                     <input type="hidden" name="action" value="Update Candidate" >
                     <input type="RESET" id="contact-submit">
                     <input type="submit" id="contact-submit" value="UPDATE" >

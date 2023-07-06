@@ -4,7 +4,7 @@
  */
 package Contract;
 
-import Candidate.Candidate;
+import Candidate.CandidateDTO;
 import Candidate.CandidateDAO;
 import User_Login_Controller.User_Login_DTO;
 import java.io.IOException;
@@ -18,8 +18,8 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author flami
- * This servlet class use to handle approve or reject temporary contract by HRM
+ * @author flami This servlet class use to handle approve or reject temporary
+ * contract by HRM
  */
 @WebServlet(name = "DecisionContractController", urlPatterns = {"/DecisionContractController"})
 public class DecisionContractController extends HttpServlet {
@@ -36,6 +36,7 @@ public class DecisionContractController extends HttpServlet {
     private final static String ERROR = "showCandidateContractDetail.jsp";
     private final static String SUCCESS = "searchContract.jsp";
     private final static String CONTRACT_PRINTING = "printContract.jsp";
+    private final static String URL = "main.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -44,13 +45,13 @@ public class DecisionContractController extends HttpServlet {
         String url = ERROR;
         try {
             String action = request.getParameter("action");
-            String discription = request.getParameter("discription");
+            String description = request.getParameter("description");
             String candidateID = request.getParameter("candidateID");
             String contractID = request.getParameter("contractID");
 
             ContractDAO dao = new ContractDAO();
-            Candidate candidate = dao.getACandidate(candidateID);
-            TemporaryContract tempContract = dao.getTemporaryContract(contractID);
+            CandidateDTO candidate = dao.getACandidate(candidateID);
+            TemporaryContractDTO tempContract = dao.getTemporaryContract(contractID);
 
             String roleName;
             HttpSession session = request.getSession();
@@ -59,17 +60,17 @@ public class DecisionContractController extends HttpServlet {
 
             if (roleName.equals("HRM")) {
                 if (action.equals("Reject Contract")) {
-                    if (discription.isEmpty() || discription == null) {
+                    if (description.isEmpty() || description == null) {
                         request.setAttribute("ERROR_MESSAGE",
                                 "Need to fill in Reason to reject!");
                         check = false;
                     } else {
                         tempContract.setStatus("REJECTED");
-                        tempContract.setReason(discription);
+                        tempContract.setReason(description);
                     }
                 } else if (action.equals("Approve Contract")) {
                     tempContract.setStatus("APPROVED");
-                    tempContract.setReason(discription);
+                    tempContract.setReason(description);
                 }
 
                 if (check) {
@@ -83,7 +84,8 @@ public class DecisionContractController extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            request.getRequestDispatcher(url).forward(request, response);
+            request.setAttribute("URL", url);
+            request.getRequestDispatcher(URL).forward(request, response);
         }
     }
 

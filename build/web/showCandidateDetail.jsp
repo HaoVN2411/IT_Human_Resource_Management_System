@@ -4,10 +4,10 @@
     Author     : flami
 --%>
 
-<%@page import="Contract.TemporaryContract"%>
+<%@page import="Contract.TemporaryContractDTO"%>
 <%@page import="Contract.ContractError"%>
 <%@page import="java.time.LocalDate"%>
-<%@page import="Candidate.Candidate"%>
+<%@page import="Candidate.CandidateDTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -17,11 +17,11 @@
     </head>
     <body>
         <%
-            Candidate candidateDetail = (Candidate) request.getAttribute("CANDIDATE");
+            CandidateDTO candidateDetail = (CandidateDTO) request.getAttribute("CANDIDATE");
             if (candidateDetail != null) {
-                TemporaryContract tempContract = (TemporaryContract) request.getAttribute("TEMPORARY_CONTRACT");
+                TemporaryContractDTO tempContract = (TemporaryContractDTO) request.getAttribute("TEMPORARY_CONTRACT");
                 String status;
-                if (tempContract == null || tempContract.getStatus()==null)
+                if (tempContract == null)
                     status = "None";
                 else
                     status = tempContract.getStatus();
@@ -43,7 +43,7 @@
             ContractError contractErr = new ContractError();
 
             if (tempContract == null) {
-                tempContract = new TemporaryContract();
+                tempContract = new TemporaryContractDTO();
             }
         %>
 
@@ -52,14 +52,15 @@
             if(status.equals("REJECTED") || status.equals("None")){
         %>
         <div>
-            <form action="updateCandidate.jsp">
+            <form action="updateCandidate.jsp" method="POST">
                 <%
                     session.setAttribute("CANDIDATE", candidateDetail);
                 %>
                 <input type="hidden" name="candidateID" value="<%=candidateDetail.getId()%>">
-                <input type="submit"  value="Update" tabindex="2">
+                <input name="action" type="submit"  value="Update" tabindex="2">
             </form>            
         </div>
+
 
         <!--Contract Form-->  
         <%
@@ -79,7 +80,7 @@
         %>
         <p>Contract of this candidate is created</p>
         <%
-        } else {
+            } else {
         %>
         <form action="MainController" method="POST">
             <fieldset>
@@ -101,8 +102,8 @@
                 <%=conErr.getSalaryError()%>   
             </fieldset>
             <fieldset>
-                <label for="discription">Notation</label><br/>
-                <input placeholder="Type your Message Here...." name="discription"
+                <label for="description">Notation</label><br/>
+                <input placeholder="Type your Message Here...." name="description"
                        <%
                            if (tempContract.getDescription() == null)
                                tempContract.setDescription("");
@@ -125,7 +126,7 @@
         <%
                     }
                 }
-                session.removeAttribute("CANDIDATE");
+               // session.removeAttribute("CANDIDATE");
             }
         %>
     </body>

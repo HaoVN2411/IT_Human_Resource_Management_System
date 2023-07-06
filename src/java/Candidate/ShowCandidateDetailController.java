@@ -4,7 +4,7 @@
  */
 package Candidate;
 
-import Contract.TemporaryContract;
+import Contract.TemporaryContractDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -15,8 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author flami
- * this servlet class return all information about candidate
+ * @author flami this servlet class return all information about candidate
  */
 @WebServlet(name = "ShowCandidateDetailController", urlPatterns = {"/ShowCandidateDetailController"})
 public class ShowCandidateDetailController extends HttpServlet {
@@ -32,22 +31,24 @@ public class ShowCandidateDetailController extends HttpServlet {
      */
     private final static String ERROR = "searchCandidate.jsp";
     private final static String SUCCESS = "showCandidateDetail.jsp";
+    private final static String URL = "main.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = SUCCESS;
+        String url = ERROR;
         try {
             String candidateID = request.getParameter("candidateID");
             CandidateDAO dao = new CandidateDAO();
             //get a candidate from database
-            Candidate candidate = dao.getACandidate(candidateID);
+            CandidateDTO candidate = dao.getACandidate(candidateID);
             if (candidate != null) {
                 //get temporary contract of this candidate
-                TemporaryContract tempContract = dao.getTemporaryContractByCandidateID(candidateID);
+                TemporaryContractDTO tempContract = dao.getTemporaryContractByCandidateID(candidateID);
                 String status = null;
-                if(tempContract!=null)
-                 status = tempContract.getStatus();
+                if (tempContract != null) {
+                    status = tempContract.getStatus();
+                }
                 if (status != null) {
                     if (status.equals("APPROVED")) {
                         request.setAttribute("STATUS_CONTRACT",
@@ -65,11 +66,13 @@ public class ShowCandidateDetailController extends HttpServlet {
                 //return candidate and temporary contract to show
                 request.setAttribute("CANDIDATE", candidate);
                 request.setAttribute("TEMPORARY_CONTRACT", tempContract);
+                url = SUCCESS;
             }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            request.getRequestDispatcher(url).forward(request, response);
+            request.setAttribute("URL", url);
+            request.getRequestDispatcher(URL).forward(request, response);
         }
     }
 

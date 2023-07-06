@@ -4,11 +4,11 @@
     Author     : flami
 --%>
 
-<%@page import="Contract.TemporaryContract"%>
-<%@page import="Contract.CandidateContract"%>
-<%@page import="Contract.CandidateContract"%>
+<%@page import="Contract.TemporaryContractDTO"%>
+<%@page import="Contract.CandidateContractDTO"%>
+<%@page import="Contract.CandidateContractDTO"%>
 <%@page import="java.util.List"%>
-<%@page import="Candidate.Candidate"%>
+<%@page import="Candidate.CandidateDTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 
@@ -19,7 +19,6 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Responesive Admin Dashboard | Redesign</title>
-        <link rel="stylesheet" type="text/css" href="CSS/css.css">
 
     </head>
 
@@ -191,7 +190,7 @@
 
             <!--Print List-->    
             <%
-                List<CandidateContract> listCandidateContract = (List<CandidateContract>) request.getAttribute("LIST_CANDIDATE_CONTRACT");
+                List<CandidateContractDTO> listCandidateContract = (List<CandidateContractDTO>) request.getAttribute("LIST_CANDIDATE_CONTRACT");
                 if ((listCandidateContract == null || listCandidateContract.isEmpty()) && !search.equals("")) {
             %>
             <h2>No record!</h2>
@@ -215,9 +214,9 @@
                 <tbody>
                     <%
                         int count = 1;
-                        for (CandidateContract candidateContract : listCandidateContract) {
-                            Candidate candidate = candidateContract.getCandidate();
-                            TemporaryContract tempContract = candidateContract.getTempCont();
+                        for (CandidateContractDTO candidateContract : listCandidateContract) {
+                            CandidateDTO candidate = candidateContract.getCandidate();
+                            TemporaryContractDTO tempContract = candidateContract.getTempCont();
                     %>       
                 <form action="MainController" method="POST">
                     <tr>

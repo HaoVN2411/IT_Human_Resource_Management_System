@@ -4,7 +4,7 @@
     Author     : flami
 --%>
 
-<%@page import="Candidate.Candidate"%>
+<%@page import="Candidate.CandidateDTO"%>
 <%@page import="Candidate.CandidateError"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -12,7 +12,6 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>CANDIDATE FORM</title>
-        <link rel="stylesheet" href="CSS/candidate.css"/>
     </head>
     <body>
         <%
@@ -21,9 +20,9 @@
                 candidateError = new CandidateError();
             }
 
-            Candidate candidate = (Candidate) request.getAttribute("CANDIDATE");
+            CandidateDTO candidate = (CandidateDTO) request.getAttribute("CANDIDATE");
             if (candidate == null) {
-                candidate = new Candidate();
+                candidate = new CandidateDTO();
             }
         %>
         <div class="container">  

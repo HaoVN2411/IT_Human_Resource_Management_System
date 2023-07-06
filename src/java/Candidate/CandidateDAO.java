@@ -4,9 +4,9 @@
  */
 package Candidate;
 
-import Candidate.Candidate;
+import Candidate.CandidateDTO;
 import sample.Utils.DBUtils;
-import Contract.TemporaryContract;
+import Contract.TemporaryContractDTO;
 import static java.rmi.server.LogStream.log;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,7 +23,7 @@ import java.util.List;
  */
 public class CandidateDAO {
 
-    public boolean insertContractCandidate(Candidate candidate) throws SQLException {
+    public boolean insertCandidate(CandidateDTO candidate) throws SQLException {
         boolean check = false;
         Connection conn = null;
         PreparedStatement stm = null;
@@ -66,11 +66,11 @@ public class CandidateDAO {
         return check;
     }
 
-    public TemporaryContract getTemporaryContractByCandidateID(String candidateID) throws SQLException {
+    public TemporaryContractDTO getTemporaryContractByCandidateID(String candidateID) throws SQLException {
         Connection conn = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
-        TemporaryContract tempContract = null;
+        TemporaryContractDTO tempContract = null;
         try {
             conn = DBUtils.getConnection();
             if (conn != null) {
@@ -81,7 +81,7 @@ public class CandidateDAO {
                 rs = stm.executeQuery();
                 if (rs.next()) {
                     String statusContract = rs.getString("status");
-                    tempContract = new TemporaryContract();
+                    tempContract = new TemporaryContractDTO();
                     tempContract.setStatus(statusContract);
                 }
             }
@@ -103,7 +103,7 @@ public class CandidateDAO {
         return tempContract;
     }
 
-    public boolean updateCandidate(Candidate candidate) throws SQLException {
+    public boolean updateCandidate(CandidateDTO candidate) throws SQLException {
         boolean check = false;
         Connection conn = null;
         PreparedStatement stm = null;
@@ -111,10 +111,10 @@ public class CandidateDAO {
         try {
             conn = DBUtils.getConnection();
             if (conn != null) {
-                String sql = "UPDATE Candidate "
-                        + "SET fullName = ?, gender = ?,DateOfBirth = ?, phoneNumber = ?, email = ?"
-                        + ", address = ?, humanID = ?, nationality = ?, notation = ?,image = ?, isActive = ?"
-                        + " WHERE candidateID = ?";
+                String sql = "UPDATE Candidate SET fullName = ?, gender = ?,"
+                        + "DateOfBirth = ?, phoneNumber = ?, email = ?, address = ?, "
+                        + "humanID = ?, nationality = ?, notation = ?,image = ?, "
+                        + "isActive = ? WHERE candidateID = ?";
                 stm = conn.prepareStatement(sql);
                 stm.setString(1, candidate.getFullName());
                 stm.setString(2, candidate.getGender());
@@ -145,8 +145,8 @@ public class CandidateDAO {
         return check;
     }
 
-    public Candidate getACandidate(String candidateID) throws SQLException {
-        Candidate candidate = null;
+    public CandidateDTO getACandidate(String candidateID) throws SQLException {
+        CandidateDTO candidate = null;
         Connection conn = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
@@ -154,7 +154,8 @@ public class CandidateDAO {
             conn = DBUtils.getConnection();
             if (conn != null) {
                 String sql = "SELECT candidateID, fullName, gender,DateOfBirth,"
-                        + " phoneNumber, email, address, humanID, nationality, notation,image, creatorID, isActive "
+                        + " phoneNumber, email, address, humanID, nationality, "
+                        + "notation,image, creatorID, isActive "
                         + "FROM Candidate "
                         + "WHERE candidateID = ? AND isActive = ?";
                 stm = conn.prepareStatement(sql);
@@ -178,7 +179,7 @@ public class CandidateDAO {
                     String creatorID = rs.getString("creatorID");
                     Boolean isActive = rs.getBoolean("isActive");
 
-                    candidate = new Candidate(id, fullName, gender, dob,
+                    candidate = new CandidateDTO(id, fullName, gender, dob,
                             phoneNumber, email, address, humanID,
                             nationality, notation, image, creatorID, isActive);
                 }
@@ -199,8 +200,8 @@ public class CandidateDAO {
         return candidate;
     }
 
-    public List<Candidate> getListCandidate(String search, String creatorID) throws SQLException {
-        List<Candidate> list = new ArrayList<>();
+    public List<CandidateDTO> getListCandidate(String search, String creatorID) throws SQLException {
+        List<CandidateDTO> list = new ArrayList<>();
         Connection conn = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
@@ -233,7 +234,7 @@ public class CandidateDAO {
                     String image = rs.getString("image");
                     Boolean isActive = true;
 
-                    list.add(new Candidate(id, fullName, gender, dob,
+                    list.add(new CandidateDTO(id, fullName, gender, dob,
                             phoneNumber, email, address, humanID,
                             nationality, notation, image, creatorID, isActive));
                 }
@@ -306,35 +307,5 @@ public class CandidateDAO {
             }
         }
         return nextID;
-    }
-
-    public boolean deleteCandidate(String candidateID) throws SQLException {
-        Connection conn = null;
-        PreparedStatement stm = null;
-        boolean check = false;
-
-        try {
-            conn = DBUtils.getConnection();
-            if (conn != null) {
-                String sql = "UPDATE Candidate "
-                        + "SET isActive = ? WHERE candidateID = ?";
-                stm = conn.prepareStatement(sql);
-                stm.setBoolean(1, false);
-                stm.setString(2, candidateID);
-                check = stm.executeUpdate() > 0;
-            }
-        } catch (IllegalArgumentException i) {
-            i.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (conn != null) {
-                conn.close();
-            }
-            if (stm != null) {
-                stm.close();
-            }
-        }
-        return check;
     }
 }
