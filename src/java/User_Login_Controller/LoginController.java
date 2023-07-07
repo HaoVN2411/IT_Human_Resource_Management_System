@@ -20,8 +20,8 @@ import javax.servlet.http.HttpSession;
 public class LoginController extends HttpServlet {
 
     private static final String ERROR = "login.jsp";
-    private static final String Staff = "buttonShowInfo.jsp";
-    private static final String HRS = "main.jsp";
+    private static final String Staff = "mainHRS.jsp";
+    private static final String HRS = "mainHRS.jsp";
     private static final String HRM = "searchContract.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -53,7 +53,7 @@ public class LoginController extends HttpServlet {
             } else {
                 request.setAttribute("ERROR_MESSAGE", "Tài khoản không tồn tại hoặc sai mật khẩu");
             }
-                request.setAttribute("URL", "createCandidate.jsp");
+                request.setAttribute("URL", "dashBoard.jsp");
         } catch (Exception e) {
             log("Error at LoginController: " + e.toString());
         } finally {

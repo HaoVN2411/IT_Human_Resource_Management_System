@@ -33,14 +33,13 @@ public class ViewEmployeeContractController extends HttpServlet {
      */
     private static final String ERROR = "SearchEmployeeController";
     private static final String SUCCESS = "viewEmployeeContract.jsp";
-    private final static String URL = "main.jsp";
+    private final static String URL = "mainHRS.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
-            String search = request.getParameter("search");
             String employeeID = request.getParameter("employeeID");
             Employee_Info_DAO dao = new Employee_Info_DAO();
             List<ContractDTO> listContract = dao.getListEmployeeContract(employeeID);

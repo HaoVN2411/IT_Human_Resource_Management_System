@@ -24,7 +24,6 @@ public class ViewInformationController extends HttpServlet {
 
     private static final String ERROR = "error.jsp";
     private static final String SUCCESS = "viewEmployeeInformation.jsp";
-    private final static String URL = "main.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -45,8 +44,8 @@ public class ViewInformationController extends HttpServlet {
         } catch (Exception e) {
             log("error at SearchController" + e.toString());
         } finally {
-            request.setAttribute("URL", url);
-            request.getRequestDispatcher(URL).forward(request, response);
+            request.setAttribute("URL", "");
+            request.getRequestDispatcher(url).forward(request, response);
         }
     }
 
