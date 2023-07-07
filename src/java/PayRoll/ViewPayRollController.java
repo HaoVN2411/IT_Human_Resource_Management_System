@@ -3,33 +3,57 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Attendance;
+package PayRoll;
 
+import Employee_Info.Employee_Info_DTO;
+import User_Login_Controller.User_Login_DTO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.time.LocalTime;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Hào Cute
+ * @author admin
  */
-@WebServlet(name = "checkAttendanceController", urlPatterns = {"/checkAttendanceController"})
-public class checkAttendanceController extends HttpServlet {
+@WebServlet(name = "ViewPayRollController", urlPatterns = {"/ViewPayRollController"})
+public class ViewPayRollController extends HttpServlet {
 
+    private static final String ERROR = "login.jsp";
+    private static final String SUCCESS = "PayRoll.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
-        try {
-            LocalTime localTime =  LocalTime.now();
-             
+            String url = ERROR;
+            try {
+            
+            HttpSession session = request.getSession();
+            User_Login_DTO loginUser = (User_Login_DTO) session.getAttribute("USER_LOGIN");
+            PayRoll_DAO dao = new PayRoll_DAO();
+            
+            List<PayRoll_DTO> viewPayRoll = dao.getListPayRoll(loginUser.getEmployeeId());
+            
+            if(viewPayRoll.size() >0){
+                request.setAttribute("LIST_PAYROLL", viewPayRoll);
+                url = SUCCESS;
+            }
         } catch (Exception e) {
+            
+        log("error at ViewPayRoll" + e.toString());
+        } finally {
+            request.getRequestDispatcher(url).forward(request, response);
         }
+    
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -44,7 +68,11 @@ public class checkAttendanceController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(ViewPayRollController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -58,7 +86,11 @@ public class checkAttendanceController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(ViewPayRollController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

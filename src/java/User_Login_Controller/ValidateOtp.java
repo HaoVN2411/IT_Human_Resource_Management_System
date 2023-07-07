@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Attendance;
+package User_Login_Controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,32 +13,47 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- *
- * @author Hào Cute
- */
-@WebServlet(name = "AttendanceController", urlPatterns = {"/AttendanceController"})
-public class AttendanceController extends HttpServlet {
 
-    private static final String ERROR = "error.jsp";
-    private static final String CHECK_ATTENDANCE = "checkAttendance";
-    private static final String CHECK_ATTENDANCE_CONTROLLER = "checkAttendanceController";
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.SQLException;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+@WebServlet(name = "ValidateOtp", urlPatterns = {"/ValidateOtp"})
+public class ValidateOtp extends HttpServlet {
+
+    private static final long serialVersionUID = 1L;
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = ERROR;
-        try {
-            String action = request.getParameter("action");
-            if (CHECK_ATTENDANCE.equals(action)) {
-                url = CHECK_ATTENDANCE_CONTROLLER;
-            }
-
-        } catch (Exception e) {
-            log("Error at MainController" + e.toString());
-        } finally {
-            request.getRequestDispatcher(url).forward(request, response);
-        }
+                int value=Integer.parseInt(request.getParameter("otp"));
+		HttpSession session=request.getSession();
+		int otp=(int)session.getAttribute("otp");		
+		RequestDispatcher dispatcher=null;
+		
+		
+		if (value==otp) 
+		{
+			
+				request.setAttribute("email", request.getParameter("email"));
+				request.setAttribute("status", "success");
+			  dispatcher=request.getRequestDispatcher("newPassword.jsp");
+			dispatcher.forward(request, response);
+			
+		}
+		else
+		{
+			request.setAttribute("message","wrong otp");			
+		   dispatcher=request.getRequestDispatcher("EnterOtp.jsp");
+			dispatcher.forward(request, response);		
+		}
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package User_Login_Controller;
+package sample.Controllers;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -11,50 +11,47 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author Hào Cute
  */
-public class LoginController extends HttpServlet {
+public class MainController extends HttpServlet {
 
-    private static final String ERROR = "login.jsp";
-    private static final String STAFF = "staff.jsp";
-    private static final String HRS = "HRS.jsp";
-    private static final String HRM = "HRM.jsp";
+    private static final String ERROR = "error.jsp";
+    private static final String USER_LOGIN = "Login";
+    private static final String USER_LOGIN_CONTROLLER = "LoginController";
+    
+    private static final String PAYROLL = "PayRoll";
+    private static final String PAYROLL_CONTROLLER = "PayRollController";
+    private static final String FORGOTPASS = "ForgotPassword";
+    private static final String FORGOTPASS_CONTROLLER = "ForgotPasswordController";
+    
+    private static final String VIEWPAYROLL = "ViewPayRoll";
+    private static final String VIEWPAYROLL_CONTROLLER = "ViewPayRollController";
+    private static final String CHECKIN = "CheckIn";
+    private static final String CHECKIN_ATTENDANCE_CONTROLLER = "CheckInAttendanceController";
+    
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
-            String userID = request.getParameter("userID");
-            String password = request.getParameter("password");
-            User_Login_DAO DAO = new User_Login_DAO();
-            User_Login_DTO userLogin = DAO.LoginUser(userID, password);
-            if (userLogin != null) {
-                if (userLogin.isIsActive() == false) {
-                    request.setAttribute("ERROR_MESSAGE", "Tài khoản của bạn đã hết hạn. Vui lòng liên hệ với admin để biết thêm chi tiết!");
-                }
-                HttpSession Session = request.getSession();
-                if (userLogin.getRoleName().equals("Staff")) {
-                    Session.setAttribute("USER_LOGIN", userLogin);
-                    url = STAFF;
-                }
-                if (userLogin.getRoleName().equals("HR Staff")) {
-                    Session.setAttribute("USER_LOGIN", userLogin);
-                    url = HRS;
-                }
-                if (userLogin.getRoleName().equals("HR Mana")) {
-                    Session.setAttribute("USER_LOGIN", userLogin);
-                    url = HRM;
-                }
-            } else {
-                request.setAttribute("ERROR_MESSAGE", "Tài khoản không tồn tại hoặc sai mật khẩu");
+            String action = request.getParameter("action");
+            if (USER_LOGIN.equals(action)) {
+                url = USER_LOGIN_CONTROLLER;
+            } else if(PAYROLL.equals(action)){
+                url = PAYROLL_CONTROLLER;
+            } else if(VIEWPAYROLL.equals(action)){
+                url = VIEWPAYROLL_CONTROLLER;
+            }else if(FORGOTPASS.equals(action)){
+                url = FORGOTPASS_CONTROLLER;
+            }else if(CHECKIN.equals(action)){
+                url = CHECKIN_ATTENDANCE_CONTROLLER;
             }
         } catch (Exception e) {
-            log("Error at LoginController: " + e.toString());
+            log("Error at MainController" + e.toString());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }

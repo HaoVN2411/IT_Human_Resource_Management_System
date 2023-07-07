@@ -23,7 +23,10 @@ public class UserController extends HttpServlet {
     private static final String ERROR = "error.jsp";
     private static final String USER_LOGIN = "Login";
     private static final String USER_LOGIN_CONTROLLER = "LoginController";
-
+    
+    private static final String FORGOTPASS = "ForgotPassword";
+    private static final String FORGOTPASS_CONTROLLER = "ForgotPasswordController";
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -32,6 +35,8 @@ public class UserController extends HttpServlet {
             String action = request.getParameter("action");
             if (USER_LOGIN.equals(action)) {
                 url = USER_LOGIN_CONTROLLER;
+            } else if(FORGOTPASS.equals(action)){
+                url = FORGOTPASS_CONTROLLER;
             }
         } catch (Exception e) {
             log("Error at MainController" + e.toString());
