@@ -34,7 +34,7 @@ public class SearchEmployeeController extends HttpServlet {
      */
     private final static String ERROR = "searchEmployee.jsp";
     private final static String SUCCESS = "searchEmployee.jsp";
-    private final static String URL = "main.jsp";
+    private final static String CHUYEN_TRANG = "mainHRS.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -71,7 +71,7 @@ public class SearchEmployeeController extends HttpServlet {
             e.printStackTrace();
         } finally {
             request.setAttribute("URL", url);
-            request.getRequestDispatcher(URL).forward(request, response);
+            request.getRequestDispatcher(CHUYEN_TRANG).forward(request, response);
         }
     }
 

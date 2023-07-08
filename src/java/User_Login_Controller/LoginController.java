@@ -20,9 +20,9 @@ import javax.servlet.http.HttpSession;
 public class LoginController extends HttpServlet {
 
     private static final String ERROR = "login.jsp";
-    private static final String Staff = "mainHRS.jsp";
+    private static final String Staff = "mainStaff.jsp";
     private static final String HRS = "mainHRS.jsp";
-    private static final String HRM = "searchContract.jsp";
+    private static final String HRM = "mainHRM.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
