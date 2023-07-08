@@ -21,7 +21,7 @@ public class LoginController extends HttpServlet {
 
     private static final String ERROR = "login.jsp";
     private static final String STAFF = "staff.jsp";
-    private static final String HRS = "HRS.jsp";
+    private static final String HRS = "view-person-leavelog-report.jsp";
     private static final String HRM = "HRM.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)

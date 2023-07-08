@@ -55,11 +55,11 @@ public class ChangePasswordController extends HttpServlet {
             }
             if (checkValidation) {
                 User_Login_DTO user = new User_Login_DTO(loginUser.getUserID(), newPassword, true, "", "");
-                boolean checkUpdate = dao.change(user);
+                boolean checkUpdate = dao.changePassword(user);
                 if (checkUpdate) {
                     loginUser.setPassword(newPassword);
                     session.setAttribute("USER_LOGIN", loginUser);
-                    request.setAttribute("MESSAGE", "change password succesfully");
+                    request.setAttribute("MESSAGE", "Change password succesfully");
                     url = SUCCESS;
                     
                 } else {

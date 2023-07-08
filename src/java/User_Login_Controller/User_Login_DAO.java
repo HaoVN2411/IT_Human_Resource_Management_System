@@ -53,7 +53,7 @@ public class User_Login_DAO {
         return user;
     }
 
-    public boolean change(User_Login_DTO user) throws SQLException {
+    public boolean changePassword(User_Login_DTO user) throws SQLException {
         boolean result = false;
         Connection conn = null;
         PreparedStatement ptm = null;
