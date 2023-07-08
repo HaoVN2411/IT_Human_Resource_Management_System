@@ -13,7 +13,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Responesive Admin Dashboard | Redesign</title>
-        <link rel="stylesheet" type="text/css" href="css/main.css">
+        <link rel="stylesheet" type="text/css" href="CSS/main.css">
     </head>
 
     <body>
@@ -186,29 +186,29 @@
 
 
 
-//                        $(document).ready(function () {
-//                            $(".includeButton").click(function () {
-//                                var url = $(this).data("url");
-//                                sessionStorage.setItem("currentPage", url); // Lưu trạng thái vào sessionStorage
-//                                loadContent(url);
-//                            });
-//
-//                            // Hàm tải nội dung từ URL đã lưu
-//                            function loadContent(url) {
-//                                $.ajax({
-//                                    url: url,
-//                                    success: function (result) {
-//                                        $("#includedContent").html(result);
-//                                    }
-//                                });
-//                            }
-//
-//                            // Kiểm tra nếu có trạng thái được lưu trong sessionStorage
-//                            var currentPage = sessionStorage.getItem("currentPage");
-//                            if (currentPage) {
-//                                loadContent(currentPage); // Tải nội dung từ trang đã lưu
-//                            }
-//                        });
+                        $(document).ready(function () {
+                            $(".includeButton").click(function () {
+                                var url = $(this).data("url");
+                                sessionStorage.setItem("currentPage", url); // Lưu trạng thái vào sessionStorage
+                                loadContent(url);
+                            });
+
+                            // Hàm tải nội dung từ URL đã lưu
+                            function loadContent(url) {
+                                $.ajax({
+                                    url: url,
+                                    success: function (result) {
+                                        $("#includedContent").html(result);
+                                    }
+                                });
+                            }
+
+                            // Kiểm tra nếu có trạng thái được lưu trong sessionStorage
+                            var currentPage = sessionStorage.getItem("currentPage");
+                            if (currentPage) {
+                                loadContent(currentPage); // Tải nội dung từ trang đã lưu
+                            }
+                        });
 
 
 
