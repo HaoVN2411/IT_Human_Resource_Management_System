@@ -1,6 +1,8 @@
-[![IT Human Resource Management System | © 2023 ]
-# IT Human Resource Management System Project
-### Description: ### Build a system to help managing IT employees including storing attendance, overtime reports, leave application, contract, candidate and employee information. Beside that, the system can calculate the salary of that employee depending on their contribution and save to database
+
+# IT Human Resource Management System Project © 2023 
+
+### Description: 
+* Build a system to help managing IT employees including storing attendance, overtime reports, leave application, contract, candidate and employee information. Beside that, the system can calculate the salary of that employee depending on their contribution and save to database
 
 ### Members: 6
 
