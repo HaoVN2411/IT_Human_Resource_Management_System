@@ -3,6 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+//HRM can join
 package PayRoll;
 
 import Employee_Info.Employee_Info_DAO;
@@ -10,9 +11,17 @@ import Employee_Info.Employee_Info_DTO;
 import User_Login_Controller.User_Login_DTO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Date;
+import java.sql.SQLException;
+
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -35,47 +44,68 @@ public class PayRollController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
-            PayRoll_DAO dao = new PayRoll_DAO();
-            HttpSession session = request.getSession();
-            User_Login_DTO login = (User_Login_DTO) session.getAttribute("USER_LOGIN");
-            PayRoll_DTO officeHours = dao.getOfficeHours(login.getEmployeeId());
-            final float BHXH = (float) 0.045;
-            final float TNCN = (float) 0.05;
-            final float BHTN = (float) 0.02;
-            //Tinh Ot_Income
-            float ot_Income = ((officeHours.getSalary() / 176) * officeHours.getTotalHours());
-            //tinh Standard_Income
-            float standard_Income = officeHours.getOfficeHours() * (officeHours.getSalary() / 176);
-            //tinh thue ot_Income
-            float BHXH_Ot_Income = ot_Income * BHXH;
-            float TNCN_Ot_Income = ot_Income * TNCN;
-            float BHTN_Ot_Income = ot_Income * BHTN;
-            //tinh thue standard_Income
-            float BHXH_Standard_Income = standard_Income * BHXH;
-            float TNCN_Standard_Income = standard_Income * TNCN;
-            float BHTN_Standard_Income = standard_Income * BHTN;
-            //tinh total
-            float total_Tax = BHTN_Ot_Income + BHXH_Ot_Income + TNCN_Ot_Income + BHTN_Standard_Income + BHXH_Standard_Income + TNCN_Standard_Income;
-            //tinh salary            
             LocalDate localDate = LocalDate.now();
             java.sql.Date sqlDate = java.sql.Date.valueOf(localDate);
-            float total_Salary = ot_Income + standard_Income - total_Tax + officeHours.getAllowance();
-            PayRoll_DTO payRoll = new PayRoll_DTO(0, login.getUserID(), login.getEmployeeId(), sqlDate,
-                    officeHours.getOfficeHours(), officeHours.getOtHours(), ot_Income, standard_Income,
-                    BHXH, BHTN, TNCN, officeHours.getAllowance(),
-                    total_Salary, officeHours.getSalary(), officeHours.getTotalHours());
-            if (payRoll == null) {
-                url = ERROR;
-            } else {
-                request.setAttribute("PAYROLL", payRoll);
-                //checkout
-                boolean checkInsert = dao.InsertDTB(payRoll);
-                if (checkInsert) {
-                    url = SUCCESS;
+            int day = localDate.getDayOfMonth();
+            int month = localDate.getMonthValue();
+            int year = localDate.getYear();
+            PayRoll_DAO dao = new PayRoll_DAO();
+            HttpSession session = request.getSession();
+            List<String> list = dao.getEmployeeID(month - 1, year);
+            List<String> listIdPayroll = dao.getEmployeeIDPayroll(month, year);
+            if (!list.isEmpty()) {
+                for (String employeeID : list) {
+                    if (listIdPayroll.size() == 0) {
+                        List<Date> dateLeave = dao.getDateLeave(employeeID, month - 1, year);
+                        List<Date> endHour = dao.getEndHour(employeeID, month - 1, year);
+                        PayRoll_DTO totalHourPayRoll = dao.getTotalHour(employeeID, month - 1, year);
+                        final float BHXH = (float) 0.045;
+                        final float TNCN = (float) 0.05;
+                        final float BHTN = (float) 0.02;
+                        //Calculate OT_income
+                        float ot_Income = ((totalHourPayRoll.getSalary() / 176) * totalHourPayRoll.getTotalHours());
+                        //Calculate Standard_Income
+                        float standard_Income = totalHourPayRoll.getOfficeHours() * (totalHourPayRoll.getSalary() / 176);
+                        //Calculate tax OT_income
+                        float BHXH_Ot_Income = ot_Income * BHXH;
+                        float TNCN_Ot_Income = ot_Income * TNCN;
+                        float BHTN_Ot_Income = ot_Income * BHTN;
+                        //Calculate tax Standard_Income
+                        float BHXH_Standard_Income = standard_Income * BHXH;
+                        float TNCN_Standard_Income = standard_Income * TNCN;
+                        float BHTN_Standard_Income = standard_Income * BHTN;
+                        //Calculate Total
+                        float total_Tax = BHTN_Ot_Income + BHXH_Ot_Income + TNCN_Ot_Income + BHTN_Standard_Income + BHXH_Standard_Income + TNCN_Standard_Income;
+                        //Calculate Salary 
+                        int countDateLeave = 0;
+                        for (Date leaveDate : dateLeave) {
+                            boolean foundValue = false;
+                            for (Date endTime : endHour) {
+                                if (endTime.equals(leaveDate)) {
+                                    foundValue = true;
+                                    break;
+                                }
+                            }
+                            if (!foundValue) {
+                                countDateLeave++;
+                            }
+                        }
+                        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
+                        DecimalFormat decimalFormat = new DecimalFormat("#0.00", symbols);
+                        decimalFormat.setParseBigDecimal(true);
+                        float total_Salary = ot_Income + standard_Income - total_Tax + totalHourPayRoll.getAllowance() + countDateLeave * 8 * (totalHourPayRoll.getSalary() / 176);
+                        total_Salary = decimalFormat.parse(decimalFormat.format(total_Salary)).floatValue();
+                        //BigDecimal a = new BigDecimal(decimalFormat.format(total_Salary)).setScale(2, RoundingMode.HALF_UP);
+                        PayRoll_DTO payRoll = new PayRoll_DTO(0, null, employeeID, sqlDate,
+                                totalHourPayRoll.getOfficeHours(), totalHourPayRoll.getOtHours(), ot_Income, standard_Income,
+                                BHXH, BHTN, TNCN, totalHourPayRoll.getAllowance(),
+                                total_Salary , 0, 0);
+                        boolean checkInsert = dao.InsertDTB(payRoll);
+                    } else {
+                        url = ERROR;
+                    }
                 }
             }
-            
-
         } catch (Exception e) {
             log("Error at PayRollController" + e.toString());
         } finally {
@@ -83,7 +113,7 @@ public class PayRollController extends HttpServlet {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *

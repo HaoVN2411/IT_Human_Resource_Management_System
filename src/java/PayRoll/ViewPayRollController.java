@@ -1,50 +1,61 @@
+//Staf, HRS, HRM canjoin
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package sample.Controllers;
+package PayRoll;
 
+import Employee_Info.Employee_Info_DTO;
+import User_Login_Controller.User_Login_DTO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Hào Cute
+ * @author admin
  */
-public class MainController extends HttpServlet {
+@WebServlet(name = "ViewPayRollController", urlPatterns = {"/ViewPayRollController"})
+public class ViewPayRollController extends HttpServlet {
 
-    private static final String ERROR = "error.jsp";
-    private static final String USER_LOGIN = "Login";
-    private static final String USER_LOGIN_CONTROLLER = "LoginController";
-    
-    private static final String PAYROLL = "PayRoll";
-    private static final String PAYROLL_CONTROLLER = "PayRollController";
+    private static final String ERROR = "login.jsp";
+    private static final String SUCCESS = "PayRoll.jsp";
 
-    private static final String VIEWPAYROLL ="ViewPayRoll";
-    private static final String VIEWPAYROLL_CONTROLLER ="ViewPayRollController";
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = ERROR;
-        try {
-            String action = request.getParameter("action");
-            if (USER_LOGIN.equals(action)) {
-                url = USER_LOGIN_CONTROLLER;
-            } else if(PAYROLL.equals(action)){
-                url = PAYROLL_CONTROLLER;
-            }else if(VIEWPAYROLL.equals(action)){
-                url = VIEWPAYROLL_CONTROLLER;
+            String url = ERROR;
+            try {
+            
+            HttpSession session = request.getSession();
+            User_Login_DTO loginUser = (User_Login_DTO) session.getAttribute("USER_LOGIN");
+            PayRoll_DAO dao = new PayRoll_DAO();
+            
+            List<PayRoll_DTO> viewPayRoll = dao.getListPayRoll(loginUser.getEmployeeId());
+            
+            if(viewPayRoll.size() >0){
+                request.setAttribute("LIST_PAYROLL", viewPayRoll);
+                url = SUCCESS;
             }
         } catch (Exception e) {
-            log("Error at MainController" + e.toString());
+            
+        log("error at ViewPayRoll" + e.toString());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }
+    
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -59,7 +70,11 @@ public class MainController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(ViewPayRollController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -73,7 +88,11 @@ public class MainController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(ViewPayRollController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
