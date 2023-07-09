@@ -1,0 +1,88 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+
+ 
+    Created on : Jul 9, 2023, 11:02:27 AM
+    Author     : USER
+
+
+*/
+.container {
+    max-width: 1200px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+    padding: 20px 20px;
+    display: flex;
+    padding-top: 20px;
+    background-color: white;
+    margin: 30px 30px;
+}
+form{
+    height: 100%;
+    width: 100%;
+}
+.content ul {
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+.content ul li{
+    list-style: none;
+    position: relative;
+    padding-bottom: 10px;
+    padding-right: 5px;
+    position: relative;
+    width: 100%;
+    display: flex;
+    text-decoration: none;
+}
+label {
+    margin-left: 50px;
+    margin-bottom: 5px;
+    padding: 10px;
+    width: 30%;
+}
+input,select {
+    font-size: 1em;
+    margin-left: auto;
+    padding: 4px 4px;
+    margin-right: 50px;
+    width: 50%;
+}
+input::placeholder {
+    color: #999;
+    font-style: italic;
+    font-size: 0.78em;
+}
+input[type="reset"],
+input[type="submit"] {
+    font-size: 14px; 
+    padding: 8px 16px;
+    margin-top: 10px;  
+    background-color: #287bff;
+    color: #fff; 
+    border: none;
+    border-radius: 4px;  
+    width: auto;
+    margin-left: 100px;
+}
+input[type="submit"] {
+    margin-left: 200px;
+}
+input[type="reset"]:hover,
+input[type="submit"]:hover {
+    color: black;  
+}
+
+
+.errorMessage {
+    color: red;
+    margin-top: 5px;
+}
+
+#contact-submit {
+    margin-top: 10px;
+}
