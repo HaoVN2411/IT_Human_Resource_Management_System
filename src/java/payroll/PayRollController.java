@@ -16,15 +16,15 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author flami
  */
-@WebServlet(name = "PayRollController", urlPatterns = {"/PayRollController"})
-public class PayRollController extends HttpServlet {
+@WebServlet(name = "PayrollController", urlPatterns = {"/PayrollController"})
+public class PayrollController extends HttpServlet {
 
     private static final String ERROR = "error.jsp";
-    private static final String PAYROLL = "PayRoll";
-    private static final String PAYROLL_CONTROLLER = "PayRollController";
+    private static final String PAYROLL = "Caculate Payroll";
+    private static final String PAYROLL_CONTROLLER = "CaculatePayrollController";
 
     private static final String VIEWPAYROLL = "ViewPayRoll";
-    private static final String VIEWPAYROLL_CONTROLLER = "ViewPayRollController";
+    private static final String VIEWPAYROLL_CONTROLLER = "ViewPayrollController";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

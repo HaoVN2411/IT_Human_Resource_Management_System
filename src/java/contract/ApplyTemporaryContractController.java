@@ -22,23 +22,22 @@ import javax.servlet.http.Part;
 
 /**
  *
- * @author flami 
- * This servlet class apply contract which is scaned by HRS and
+ * @author flami This servlet class apply contract which is scaned by HRS and
  * add new employee and contract
  */
 @WebServlet(name = "ApplyTemporaryContractController", urlPatterns = {"/ApplyTemporaryContractController"})
 public class ApplyTemporaryContractController extends HttpServlet {
 
     private final static String ERROR = "/contract/showCandidateContractDetail.jsp";
-    private final static String SUCCESS = "/contract/searchContract.jsp";
+    private final static String SUCCESS = "SearchContractController";
     private final static String SAVE_DIR = "imageContract";
     private final static String EMPLOYEE_CONTRACT_ID_FORMAT = "EC1111";
     private final static String STAFF_ID_FORMAT = "SS1111";
-    private final static String URL = "main/mainHRS.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        String URL = "main/mainHRS.jsp";
         String url = ERROR;
         try {
             String statusContract = "";
@@ -107,8 +106,10 @@ public class ApplyTemporaryContractController extends HttpServlet {
                     tempCont.setCandidateID(candidateID);
                     daoCont.updateTemporaryContract(tempCont);
                     url = SUCCESS;
+                    URL = SUCCESS;
                 }
             } else {
+                request.setAttribute("URL", url);
                 request.setAttribute("ERROR_MESSAGE", "Contract is " + statusContract
                         + "! Do not apply contract!");
                 request.setAttribute("CANDIDATE", candidate);
@@ -117,7 +118,7 @@ public class ApplyTemporaryContractController extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            request.getRequestDispatcher(url).forward(request, response);
+            request.getRequestDispatcher(URL).forward(request, response);
         }
     }
 

@@ -17,8 +17,42 @@ import utils.DBUtils;
  */
 public class User_Login_DAO {
 
-    private static final String USER_LOGIN = "select u.employeeId, u.isActive, r.roleName from UserLogin  u, RoleInfo r where u.roleId = r.RoleID AND userID = ? AND password = ? ";
-    private static final String CHANGE = "UPDATE UserLogin SET password=? where userID=?";
+    private static final String SQL_QUEERRY = "SELECT image FROM EmployeeInformation WHERE employeeId=?";
+
+    String getPathImage(String employeeID) throws SQLException {
+        String image = "";
+        User_Login_DTO user = null;
+        Connection conn = null;
+        PreparedStatement ptm = null;
+        ResultSet rs = null;
+        try {
+            conn = DBUtils.getConnection();
+            ptm = conn.prepareStatement(SQL_QUEERRY);
+            ptm.setString(1, employeeID);
+            rs = ptm.executeQuery();
+            while (rs.next()) {
+                image = rs.getString("image");
+            }
+        } catch (Exception e) {
+
+        } finally {
+            if (conn != null) {
+                conn.close();
+            }
+            if (ptm != null) {
+                ptm.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+        }
+        return image;
+    }
+
+    private static final String USER_LOGIN = "select u.employeeId, u.isActive, r.roleName, "
+            + "e.fullName from UserLogin  u, RoleInfo r, EmployeeInformation e "
+            + "where u.roleId = r.RoleID AND e.employeeId = u.employeeId AND userID = ? AND password = ? ";
+    private static final String CHANGE = "UPDATE User_Login SET password=? where userID=?";
 
     public User_Login_DTO LoginUser(String userID, String password) throws SQLException {
         User_Login_DTO user = null;
@@ -35,7 +69,10 @@ public class User_Login_DAO {
                 String employeeId = rs.getString("employeeId");
                 boolean isActive = rs.getBoolean("isActive");
                 String roleName = rs.getString("roleName");
-                user = new User_Login_DTO(userID, password, isActive, employeeId, roleName);
+                String fullName = rs.getString("fullName");
+                user = new User_Login_DTO(userID, password, isActive, employeeId,
+                        roleName, getPathImage(employeeId),
+                        fullName);
             }
         } catch (Exception e) {
         } finally {

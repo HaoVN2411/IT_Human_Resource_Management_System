@@ -3,7 +3,8 @@
     Created on : Jun 20, 2023, 1:03:16 AM
     Author     : CAO-KIEN-QUOC
 --%>
-<%@page import="payroll.PayRoll_DTO"%>
+
+<%@page import="payroll.Payroll_DTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -14,7 +15,7 @@
     <body>
 
         <%
-            PayRoll_DTO payRoll = (PayRoll_DTO) request.getAttribute("PAYROLL");
+            Payroll_DTO payRoll = (Payroll_DTO) request.getAttribute("PAYROLL");
 
             if (payRoll != null) {
                 // Biến payRoll đã nhận giá trị từ thuộc tính session "PAYROLL"

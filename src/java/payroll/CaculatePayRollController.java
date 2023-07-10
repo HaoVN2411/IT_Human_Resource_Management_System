@@ -32,11 +32,11 @@ import javax.servlet.http.HttpSession;
  *
  * @author CAO-KIEN-QUOC
  */
-@WebServlet(name = "CaculatePayRollController", urlPatterns = {"/CaculatePayRollController"})
-public class CaculatePayRollController extends HttpServlet {
+@WebServlet(name = "CaculatePayrollController", urlPatterns = {"/CaculatePayrollController"})
+public class CaculatePayrollController extends HttpServlet {
 
-    private static final String ERROR = "login.jsp";
-    private static final String SUCCESS = "PayRoll.jsp";
+    private static final String ERROR = "login/login.jsp";
+    private static final String SUCCESS = "payroll/viewPayroll.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -57,7 +57,7 @@ public class CaculatePayRollController extends HttpServlet {
                     if (listIdPayroll.size() == 0) {
                         List<Date> dateLeave = dao.getDateLeave(employeeID, month - 1, year);
                         List<Date> endHour = dao.getEndHour(employeeID, month - 1, year);
-                        PayRoll_DTO totalHourPayRoll = dao.getTotalHour(employeeID, month - 1, year);
+                        Payroll_DTO totalHourPayRoll = dao.getTotalHour(employeeID, month - 1, year);
                         final float BHXH = (float) 0.045;
                         final float TNCN = (float) 0.05;
                         final float BHTN = (float) 0.02;
@@ -95,7 +95,7 @@ public class CaculatePayRollController extends HttpServlet {
                         float total_Salary = ot_Income + standard_Income - total_Tax + totalHourPayRoll.getAllowance() + countDateLeave * 8 * (totalHourPayRoll.getSalary() / 176);
                         total_Salary = decimalFormat.parse(decimalFormat.format(total_Salary)).floatValue();
                         //BigDecimal a = new BigDecimal(decimalFormat.format(total_Salary)).setScale(2, RoundingMode.HALF_UP);
-                        PayRoll_DTO payRoll = new PayRoll_DTO(0, null, employeeID, sqlDate,
+                        Payroll_DTO payRoll = new Payroll_DTO(0, null, employeeID, sqlDate,
                                 totalHourPayRoll.getOfficeHours(), totalHourPayRoll.getOtHours(), ot_Income, standard_Income,
                                 BHXH, BHTN, TNCN, totalHourPayRoll.getAllowance(),
                                 total_Salary , 0, 0);

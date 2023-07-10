@@ -16,6 +16,16 @@ public class User_Login_DTO {
     private boolean isActive;
     private String employeeId;
     private String roleName;
+    private String image;
+    private String employeeName;
+
+    public String getEmployeeName() {
+        return employeeName;
+    }
+
+    public void setEmployeeName(String employeeName) {
+        this.employeeName = employeeName;
+    }
 
     public User_Login_DTO() {
     }
@@ -26,6 +36,24 @@ public class User_Login_DTO {
         this.isActive = isActive;
         this.employeeId = employeeId;
         this.roleName = roleId;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public User_Login_DTO(String userID, String password, boolean isActive, String employeeId, String roleId, String image, String employeeName) {
+        this.userID = userID;
+        this.password = password;
+        this.isActive = isActive;
+        this.employeeId = employeeId;
+        this.roleName = roleId;
+        this.image = image;
+        this.employeeName = employeeName;
     }
 
     public String getUserID() {

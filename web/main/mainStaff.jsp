@@ -4,6 +4,7 @@
     Author     : flami
 --%>
 
+<%@page import="userlogin.User_Login_DTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -17,6 +18,12 @@
     </head>
 
     <body>
+        <%
+            User_Login_DTO userLogin = (User_Login_DTO) session.getAttribute("USER_LOGIN");
+            if (!userLogin.getRoleName().equalsIgnoreCase("Staff")) {
+                return;
+            }
+        %>
         <header>
             <div class="toggle">
                 <ion-icon name="menu-outline"></ion-icon>
@@ -29,7 +36,7 @@
             </div>
             <a href="#">
                 <div class="user">
-                    <img src="imageCandidate/image_C1111.jpg" alt="Hình ảnh người dùng">
+                    <img src="<%=userLogin.getImage()%>" alt="Hình ảnh người dùng">
                 </div>
             </a>
             <div class="notification">
@@ -41,13 +48,13 @@
         <div class="navigation">
             <ul>
                 <li>
-                    <a href="#" class="includeButton" data-url="dashBoard.jsp">
+                    <a href="#" class="includeButton" data-url="dashboard/dashBoard.jsp">
                         <span class="icon"><ion-icon name="file-tray-full-outline"></ion-icon></span>
                         <span class="title">Home Menu</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="includeButton" data-url="">
+                    <a href="#" class="includeButton" data-url="attendance/checkAttendance.jsp">
                         <span class="icon"><ion-icon name="people-outline"></ion-icon></span>
                         <span class="title">Attendance</span>
                     </a>
@@ -64,10 +71,10 @@
                             <span class="title">User Profile</span>
 
                         </a>
-<!--                        <a href="#">
-                            <span class="icon"><ion-icon name="chevron-forward-circle-outline"></ion-icon></ion-icon></span>
-                            <div style="padding-left: 20px;">Staff Information</div>
-                        </a>-->
+                        <!--                        <a href="#">
+                                                    <span class="icon"><ion-icon name="chevron-forward-circle-outline"></ion-icon></ion-icon></span>
+                                                    <div style="padding-left: 20px;">Staff Information</div>
+                                                </a>-->
                     </div>
                 </li>
 
@@ -78,17 +85,13 @@
                         <span class="arrow"><ion-icon name="chevron-down-outline"></ion-icon></span>
                     </a>
                     <div class="submenu" id="overtime-dropdown" style="display:none;">
-<!--                        <a href="#">
+                        <a href="#" class="includeButton" data-url="overtime/create-overtime-report.jsp"> 
                             <span class="icon"><ion-icon name="chevron-forward-circle-outline"></ion-icon></ion-icon></span>
                             <div style="padding-left: 20px;">Create</div>
-                        </a>-->
-<!--                        <a href="#">
+                        </a>
+                        <a href="#" class="includeButton" data-url="overtime/view-personal-overtime-report.jsp">
                             <span class="icon"><ion-icon name="chevron-forward-circle-outline"></ion-icon></ion-icon></span>
                             <div style="padding-left: 20px;">Personal Reports</div>
-                        </a>-->
-                        <a href="#" class="includeButton" data-url="viewOvertimeStaff.jsp">
-                            <span class="icon"><ion-icon name="chevron-forward-circle-outline"></ion-icon></ion-icon></span>
-                            <div style="padding-left: 20px;" >Staff Reports</div>
                         </a>
                     </div>
                 </li>
@@ -100,17 +103,13 @@
                     </a>
 
                     <div class="submenu" id="leave-dropdown" style="display:none;">
-                        <a href="#" class="includeButton" data-url="printContract.jsp">
+                        <a href="#" class="includeButton" data-url="leavelog/create-leavelog-apply.jsp">
                             <span class="icon"><ion-icon name="chevron-forward-circle-outline"></ion-icon></ion-icon></span>
                             <div style="padding-left: 20px;">Create</div>
                         </a>
-                        <a href="#">
+                        <a href="#" class="includeButton" data-url="leavelog/view-person-leavelog-report.jsp">
                             <span class="icon"><ion-icon name="chevron-forward-circle-outline"></ion-icon></ion-icon></span>
-                            <div style="padding-left: 20px;">Personal LeaveLog</div>
-                        </a>
-                        <a href="#">
-                            <span class="icon"><ion-icon name="chevron-forward-circle-outline"></ion-icon></ion-icon></span>
-                            <div style="padding-left: 20px;">Staff LeaveLog</div>
+                            <div style="padding-left: 20px;">Personal Leave Log</div>
                         </a>
                     </div>
                 </li>
@@ -121,7 +120,7 @@
                         <span class="arrow"><ion-icon name="chevron-down-outline"></ion-icon></span>
                     </a>
                     <div class="submenu" id="contract-dropdown" style="display:none;">
-                        <a href="#" class="includeButton" data-url="">
+                        <a href="#" class="includeButton" data-url="dashboard/dashBoard.jsp">
                             <span class="icon"><ion-icon name="chevron-forward-circle-outline"></ion-icon></ion-icon></span>
                             <div style="padding-left: 20px;">Create</div>
                         </a>

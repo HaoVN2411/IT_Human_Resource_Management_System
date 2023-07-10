@@ -11,7 +11,7 @@ import java.sql.Date;
  *
  * @author Hào Cute
  */
-public class PayRoll_DTO {
+public class Payroll_DTO {
     private int payID;
     private String fullName;
     private String employeeID;
@@ -28,10 +28,10 @@ public class PayRoll_DTO {
     private float salary;
     private float totalHours;
     
-    public PayRoll_DTO() {
+    public Payroll_DTO() {
     }
 
-    public PayRoll_DTO(int payID, String fullName, String employeeID, Date paidDate, float officeHours, float otHours, float ot_income, float stand_income, float BHXH, float BHTN, float TNCN, float allowance, float total, float salary, float totalHours) {
+    public Payroll_DTO(int payID, String fullName, String employeeID, Date paidDate, float officeHours, float otHours, float ot_income, float stand_income, float BHXH, float BHTN, float TNCN, float allowance, float total, float salary, float totalHours) {
         this.payID = payID;
         this.fullName = fullName;
         this.employeeID = employeeID;

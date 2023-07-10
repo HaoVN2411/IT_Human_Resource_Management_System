@@ -1,10 +1,9 @@
 <%-- 
-    Document   : HRM
-    Created on : May 29, 2023, 11:43:26 AM
-    Author     : Hào Cute
+    Document   : CheckAttendance
+    Created on : Jul 5, 2023, 3:25:30 PM
+    Author     : admin
 --%>
 
-<%@page import="payroll.PayRoll_DTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -13,8 +12,9 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <form action="PayRollController" method="POST">
-             <input type="submit" name="action" value="PayRoll">
+        <form action="AttendanceController" method="POST">
+            <input type="submit" name="action" value="CheckIn">
         </form>
+        ${requestScope.MESSAGE}
     </body>
 </html>

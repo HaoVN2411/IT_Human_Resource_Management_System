@@ -3,16 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/D:/Ky5/SWP/IT_Human_Resource_Management_System/src/java/attendance/CheckInAttendanceController.java</file>
             <file>file:/D:/Ky5/SWP/IT_Human_Resource_Management_System/web/main/mainHRS.jsp</file>
-            <file>file:/D:/Ky5/SWP/IT_Human_Resource_Management_System/src/java/payroll/PayRollController.java</file>
-            <file>file:/D:/Ky5/SWP/IT_Human_Resource_Management_System/web/main/mainHRM.jsp</file>
-            <file>file:/D:/Ky5/SWP/IT_Human_Resource_Management_System/web/payroll/btnPayRoll.jsp</file>
-            <file>file:/D:/Ky5/SWP/IT_Human_Resource_Management_System/web/contract/showCandidateContractDetail.jsp</file>
-            <file>file:/D:/Ky5/SWP/IT_Human_Resource_Management_System/src/java/employee/ViewInformationController.java</file>
-            <file>file:/D:/Ky5/SWP/IT_Human_Resource_Management_System/web/candidate/updateCandidate.jsp</file>
-            <file>file:/D:/Ky5/SWP/IT_Human_Resource_Management_System/src/java/candidate/CandidateController.java</file>
-            <file>file:/D:/Ky5/SWP/IT_Human_Resource_Management_System/web/candidate/showCandidateDetail.jsp</file>
-            <file>file:/D:/Ky5/SWP/IT_Human_Resource_Management_System/src/java/payroll/ViewPayRollController.java</file>
+            <file>file:/D:/Ky5/SWP/IT_Human_Resource_Management_System/src/java/payroll/ViewPayrollController.java</file>
+            <file>file:/D:/Ky5/SWP/IT_Human_Resource_Management_System/src/java/userlogin/LoginController.java</file>
+            <file>file:/D:/Ky5/SWP/IT_Human_Resource_Management_System/web/attendance/checkAttendance.jsp</file>
+            <file>file:/D:/Ky5/SWP/IT_Human_Resource_Management_System/web/main/mainStaff.jsp</file>
+            <file>file:/D:/Ky5/SWP/IT_Human_Resource_Management_System/src/java/payroll/PayrollController.java</file>
+            <file>file:/D:/Ky5/SWP/IT_Human_Resource_Management_System/src/java/userlogin/UserLoginController.java</file>
         </group>
     </open-files>
 </project-private>

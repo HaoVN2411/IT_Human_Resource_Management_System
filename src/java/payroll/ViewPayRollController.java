@@ -26,11 +26,11 @@ import userlogin.User_Login_DTO;
  *
  * @author admin
  */
-@WebServlet(name = "ViewPayRollController", urlPatterns = {"/ViewPayRollController"})
-public class ViewPayRollController extends HttpServlet {
+@WebServlet(name = "ViewPayrollController", urlPatterns = {"/ViewPayrollController"})
+public class ViewPayrollController extends HttpServlet {
 
     private static final String ERROR = "dashboard/dashBoard.jsp";
-    private static final String SUCCESS = "payroll/viewPayRoll.jsp";
+    private static final String SUCCESS = "payroll/viewPayroll.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
@@ -42,7 +42,7 @@ public class ViewPayRollController extends HttpServlet {
             User_Login_DTO loginUser = (User_Login_DTO) session.getAttribute("USER_LOGIN");
             PayRoll_DAO dao = new PayRoll_DAO();
 
-            List<PayRoll_DTO> viewPayRoll = dao.getListPayRoll(loginUser.getEmployeeId());
+            List<Payroll_DTO> viewPayRoll = dao.getListPayRoll(loginUser.getEmployeeId());
 
             if (viewPayRoll.size() > 0) {
                 request.setAttribute("LIST_PAYROLL", viewPayRoll);
@@ -71,7 +71,7 @@ public class ViewPayRollController extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (SQLException ex) {
-            Logger.getLogger(ViewPayRollController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ViewPayrollController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -89,7 +89,7 @@ public class ViewPayRollController extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (SQLException ex) {
-            Logger.getLogger(ViewPayRollController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ViewPayrollController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

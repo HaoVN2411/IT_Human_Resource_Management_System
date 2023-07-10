@@ -47,8 +47,8 @@ public class PayRoll_DAO {
 
     private static final String GETENDHOUR = "SELECT endHour, employeeID from Attendance where employeeID like ? AND MONTH(endHour) = ? AND YEAR(endHour) = ? ";
 
-    public PayRoll_DTO getTotalHour(String employeeId, int month, int year) throws SQLException {
-        PayRoll_DTO payRoll = null;
+    public Payroll_DTO getTotalHour(String employeeId, int month, int year) throws SQLException {
+        Payroll_DTO payRoll = null;
         Connection conn = null;
         PreparedStatement ptm = null;
         ResultSet rs = null;
@@ -87,7 +87,7 @@ public class PayRoll_DAO {
                 if (rs.next()) {
                     float allowance = Float.parseFloat(rs.getString("allowance"));
                     float salary = Float.parseFloat(rs.getString("salary"));
-                    payRoll = new PayRoll_DTO(0, null, employeeId, null, totaloffHours, ot, 0, 0, 0, 0, 0, allowance, 0, salary, total);
+                    payRoll = new Payroll_DTO(0, null, employeeId, null, totaloffHours, ot, 0, 0, 0, 0, 0, allowance, 0, salary, total);
                 }
             }
         } catch (Exception e) {
@@ -103,7 +103,7 @@ public class PayRoll_DAO {
         return payRoll;
     }
 
-    public boolean InsertDTB(PayRoll_DTO payRoll) throws SQLException {
+    public boolean InsertDTB(Payroll_DTO payRoll) throws SQLException {
         Connection conn = null;
         PreparedStatement ptm = null;
         boolean result = false;
@@ -178,8 +178,8 @@ public class PayRoll_DAO {
         return listEmployeeID;
     }
 
-    public List<PayRoll_DTO> getListPayRoll(String employeeID) throws SQLException {
-        List<PayRoll_DTO> listPayRoll = new ArrayList<>();
+    public List<Payroll_DTO> getListPayRoll(String employeeID) throws SQLException {
+        List<Payroll_DTO> listPayRoll = new ArrayList<>();
         Connection conn = null;
         PreparedStatement ptm = null;
         ResultSet rs = null;
@@ -203,7 +203,7 @@ public class PayRoll_DAO {
                     float TNCN = rs.getFloat("TNCN");
                     float allowance = rs.getFloat("allowance");
                     float total = rs.getFloat("total");
-                    listPayRoll.add(new PayRoll_DTO(payID, fullName, employeeID, (java.sql.Date) paidDate, officeHours, otHours, ot_income, standard_income, BHXH, BHTN, TNCN, allowance, total, total, otHours));
+                    listPayRoll.add(new Payroll_DTO(payID, fullName, employeeID, (java.sql.Date) paidDate, officeHours, otHours, ot_income, standard_income, BHXH, BHTN, TNCN, allowance, total, total, otHours));
                 }
             }
         } catch (Exception e) {
