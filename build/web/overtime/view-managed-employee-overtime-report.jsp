@@ -27,7 +27,7 @@
         <%
             List<OverTimeReport_DTO> listReport = null;
             listReport = (List<OverTimeReport_DTO>) request.getAttribute("LIST_MANAGED_EMPLOYEE_OVERTIME_REPORT");
-            if (listReport != null) {
+            if (listReport.size()!=0) {
         %>
         <table border="1">
             <thead>
@@ -105,7 +105,7 @@
         }
     %>
     <%
-        String message = (String) request.getParameter("MESSAGE");
+        String message = (String) request.getAttribute("MESSAGE");
         if (message != null) {
     %>
     <%=message%>

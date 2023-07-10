@@ -42,6 +42,7 @@ header {
     background-color: #536DFE;
 }
 
+
 .navigation li:hover{
     border-left-color: #536DFE;/* Đổi màu chữ thành màu đen khi trỏ vào */
     transition: background-color 0.3s, color 1s;
@@ -56,18 +57,23 @@ header {
 }
 
 .toggle {
-    position: relative;
-    width: 60px;
-    height: 60.1px;
     display: flex;
-    justify-content: center;
     align-items: center;
-    font-size: 2.5em;
-    cursor: pointer;
 }
-.toggle:hover{
-    color: white;
+
+.toggle ion-icon {
+    margin-right: 15px;
+    margin-left: 10px;
+    color: #212529;
+    font-size: 45px; /* Adjust the font size as desired */
 }
+
+.toggle span {
+    color: #212529;
+    font-weight: bold;
+    font-size: 45px; /* Adjust the font size as desired */
+}
+
 .user img{
     position: absolute;
     top: 8px;

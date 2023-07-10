@@ -98,8 +98,10 @@ public class CaculatePayrollController extends HttpServlet {
                         Payroll_DTO payRoll = new Payroll_DTO(0, null, employeeID, sqlDate,
                                 totalHourPayRoll.getOfficeHours(), totalHourPayRoll.getOtHours(), ot_Income, standard_Income,
                                 BHXH, BHTN, TNCN, totalHourPayRoll.getAllowance(),
-                                total_Salary , 0, 0);
+                                total_Salary, 0, 0);
                         boolean checkInsert = dao.InsertDTB(payRoll);
+                        request.setAttribute("MESSAGE", "PayRoll succesfully");
+                        url = SUCCESS;
                     } else {
                         url = ERROR;
                     }

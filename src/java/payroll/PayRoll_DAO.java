@@ -25,7 +25,7 @@ public class PayRoll_DAO {
     private static final String GET_OFFHOURS = "SELECT officeHours "
             + "FROM Attendance  "
             + "WHERE employeeID = ? AND MONTH(startHour) = ? AND YEAR(startHour) = ? ";
-    private static final String GET_OTHOURS = "SELECT otHours, totalHours "
+    private static final String GET_OTHOURS = "SELECT otHours, total "
             + "FROM OverTimeLog "
             + "WHERE isStatus like '1' AND employeeId = ? AND MONTH(dateOT) = ? AND YEAR(dateOT) = ? ";
 
@@ -76,7 +76,7 @@ public class PayRoll_DAO {
                 rs = ptm.executeQuery();
                 while (rs.next()) {
                     float otHours = Float.parseFloat(rs.getString("otHours"));
-                    float totalHours = Float.parseFloat(rs.getString("totalHours"));
+                    float totalHours = Float.parseFloat(rs.getString("total"));
                     ot += otHours;
                     total += totalHours;
                 }

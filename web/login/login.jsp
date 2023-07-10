@@ -45,7 +45,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                             <input placeholder="Password" type="password" class="input" name="password">
                         </div>
                     </div>
-                    <a href="#">Forgot Password?</a>
+                    <a href="login/run.jsp">Forgot Password?</a>
                     <input type="submit" class="btn" name="action" value="Login">
                 </form>
 

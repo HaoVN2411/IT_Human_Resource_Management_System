@@ -28,6 +28,8 @@
         <header>
             <div class="toggle">
                 <ion-icon name="menu-outline"></ion-icon>
+                                                <span>HRM</span>
+
             </div>
             <div class="user-info">
                 <div class="user-options">
@@ -69,10 +71,6 @@
                             <span class="icon"><ion-icon name="chevron-forward-circle-outline"></ion-icon></ion-icon></span>
                             <div style="padding-left: 20px;">Staff Information</div>
                         </a>                        
-                        <a href="#" class="includeButton" data-url="PayRollController?action=ViewPayRoll">
-                            <span class="icon"><ion-icon name="chevron-forward-circle-outline"></ion-icon></ion-icon></span>
-                            <div style="padding-left: 20px;">View Pay Roll</div>
-                        </a>
                     </div>
                 </li>
 
@@ -145,10 +143,6 @@
         </div>
         <!--main-->
         <div class="main">
-            <div class="topbar">
-                <h1>Wellcom back</h1>
-                <p id="current-time"></p>
-            </div>
             <div id="includedContent">
                 <jsp:include page="${URL}" />
             </div>

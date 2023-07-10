@@ -27,6 +27,7 @@
         <header>
             <div class="toggle">
                 <ion-icon name="menu-outline"></ion-icon>
+                                                <span>Staff</span>
             </div>
             <div class="user-info">
                 <div class="user-options">
@@ -134,10 +135,6 @@
         </div>
         <!--main-->
         <div class="main">
-            <div class="topbar">
-                <h1>Wellcom back</h1>
-                <p id="current-time"></p>
-            </div>
             <div id="includedContent">
                 <jsp:include page="${URL}" />
             </div>
